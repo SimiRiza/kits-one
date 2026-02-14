@@ -425,17 +425,17 @@ const COURSE_DATA = {
             { n: "ETS-3", c: 1 }
         ],
         "Sem 4": [
-            { n: "DMPS", c: 3 },
-            { n: "DBMS", c: 4 },
-            { n: "DAA", c: 3 },
-            { n: "I & V", c: 4 },
-            { n: "PP", c: 4 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+    { n: "DBMS", c: 4, code: "U24CN402" },
+    { n: "DAA", c: 4, code: "U24CN403" },
+    { n: "IWV", c: 4, code: "U24CN404" }, // Internet Works & Virtualization
+    { n: "PP", c: 4, code: "U24CN405" },
+    { n: "DMPS", c: 3, code: "U24MH401" },
+    { n: "QALR", c: 2, code: "U24VA406A" },
+    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
+    { n: "Practicum-4", c: 1 },
+    { n: "SEA/SAA-4", c: 1 },
+    { n: "ETS-4", c: 1 }
+],
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "AIML", c: 4 },
