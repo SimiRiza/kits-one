@@ -59,7 +59,7 @@ function generateSubjects(branch, sem) {
     rawCourses.forEach(c => {
         const name = c.n;
         const credits = c.c;
-
+        const code = c.code; // Added for stable UMS matching using course code
         // Exclusion List (No attendance needed usually)
         if (name.includes("Practicum") ||
             name.includes("SEA/SAA") ||
@@ -71,13 +71,52 @@ function generateSubjects(branch, sem) {
         }
 
         if (credits === 4) {
-            // Split into Theory & Lab
-            generated.push({ name: `${name} Theory`, held: 0, absent: 0 });
-            generated.push({ name: `${name} Lab`, held: 0, absent: 0 });
-        } else {
-            // Single Subject
-            generated.push({ name: name, held: 0, absent: 0 });
-        }
+
+    /*
+     * Extended subject object with:
+     * - `code`: official course identifier (e.g., U24CS402)
+     * - `type`: distinguishes theory vs lab
+     *
+     * Purpose:
+     * Enables robust UMS auto-fill using course code instead of
+     * fragile name-based matching.
+     * Does NOT affect UI or SGPA logic.
+     */
+
+    generated.push({
+        name: `${name} Theory`,
+        code: code,        // Added: stable course identifier
+        type: "theory",    // Added: needed to differentiate from lab
+        held: 0,
+        absent: 0
+    });
+
+    generated.push({
+        name: `${name} Lab`,
+        code: code,        // Same course code
+        type: "lab",       // Marks this row as lab
+        held: 0,
+        absent: 0
+    });
+
+} else {
+
+    /*
+     * For non-4 credit subjects (single component),
+     * we still attach `code` and default `type` as "theory".
+     * This ensures uniform internal structure for matching.
+     */
+
+  generated.push({
+    name: name,
+    code: c.code || null,
+    type: c.type || "theory", // assume theory if not specified
+    held: 0,
+    absent: 0
+});
+
+}
+
     });
 
     return generated;
@@ -118,6 +157,20 @@ function saveAttendanceData(data) {
 
 function renderAttendanceTable() {
     const data = getAttendanceData();
+// Backward compatibility: ensure saved data has code & type
+if (data && Array.isArray(data)) {
+
+    const freshSubjects = generateSubjects(
+        document.getElementById('branch-select').value,
+        document.getElementById('semester-select').value
+    );
+
+    data.forEach((s, index) => {
+        if (!s.code) s.code = freshSubjects[index]?.code || null;
+        if (!s.type) s.type = freshSubjects[index]?.type || "theory";
+    });
+}
+
 
     if (!data) {
         // No selection made
@@ -134,21 +187,34 @@ function renderAttendanceTable() {
     // Render Table Rows (Desktop) & Mobile Cards
     attTableBody.innerHTML = data.map((s, i) => `
         <tr class="group border-b border-slate-100 hover:bg-slate-50 transition-colors hidden md:table-row">
-            <td class="p-4 font-bold text-slate-700 text-sm">
-                ${s.name}
-            </td>
-            <td class="p-4 text-center">
-                <input type="number" min="0" data-idx="${i}" data-field="held" value="${s.held}" 
-                    class="w-16 p-2 text-center bg-white border border-slate-200 rounded-lg font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none transition text-sm">
-            </td>
-            <td class="p-4 text-center">
-                <input type="number" min="0" data-idx="${i}" data-field="absent" value="${s.absent}" 
-                    class="w-16 p-2 text-center bg-white border border-red-200 text-red-600 rounded-lg font-bold focus:ring-2 focus:ring-red-500 outline-none transition text-sm">
-            </td>
-            <td class="p-4 text-right">
-                <span id="att-pct-${i}" class="font-bold text-slate-400 text-sm">0%</span>
-            </td>
-        </tr>
+    <td class="p-4 font-bold text-slate-700 text-sm">
+        ${s.name}
+    </td>
+    <td class="p-4 text-center">
+        <input type="number"
+            min="0"
+            data-idx="${i}"
+            data-code="${s.code || ''}"
+            data-type="${s.type || ''}"
+            data-field="held"
+            value="${s.held}"
+            class="w-16 p-2 text-center bg-white border border-slate-200 rounded-lg font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none transition text-sm">
+    </td>
+    <td class="p-4 text-center">
+        <input type="number"
+            min="0"
+            data-idx="${i}"
+            data-code="${s.code || ''}"
+            data-type="${s.type || ''}"
+            data-field="absent"
+            value="${s.absent}"
+            class="w-16 p-2 text-center bg-white border border-red-200 text-red-600 rounded-lg font-bold focus:ring-2 focus:ring-red-500 outline-none transition text-sm">
+    </td>
+    <td class="p-4 text-right">
+        <span id="att-pct-${i}" class="font-bold text-slate-400 text-sm">0%</span>
+    </td>
+</tr>
+
         
         <!-- Mobile Card View -->
         <tr class="md:hidden border-b theme-border last:border-0">
@@ -323,4 +389,71 @@ function resetAttendanceData() {
         if (key) localStorage.removeItem(key);
         renderAttendanceTable();
     }
+}
+/*
+ * UMS Auto-Fill (Code-Based Matching)
+ * ------------------------------------
+ * Uses official course code + type (theory/lab) for matching.
+ * Avoids fragile name-based comparisons.
+ * Fully overwrites existing attendance safely.
+ */
+function parseUmsAttendance() {
+
+    const textArea = document.getElementById("ums-paste");
+
+    if (!textArea || !textArea.value.trim()) {
+        alert("Paste UMS attendance first.");
+        return;
+    }
+
+    const lines = textArea.value.split("\n");
+    const attendanceRows = lines.filter(line => /^\d+/.test(line.trim()));
+
+    const parsedMap = {};
+
+    attendanceRows.forEach(line => {
+
+        const codeMatch = line.match(/U\d+[A-Z]+\d+[A-Z]?/i);
+        if (!codeMatch) return;
+
+        const code = codeMatch[0].toUpperCase();
+
+        let type = "theory";
+        if (line.toLowerCase().includes("lab")) type = "lab";
+
+        const parts = line.trim().split(/\s+/);
+        parts.pop();
+        const absent = parseInt(parts.pop()) || 0;
+        const held = parseInt(parts.pop()) || 0;
+
+        const key = code + "_" + type;
+
+        if (!parsedMap[key]) {
+            parsedMap[key] = { held: 0, absent: 0 };
+        }
+
+        parsedMap[key].held += held;
+        parsedMap[key].absent += absent;
+    });
+
+    const rows = attTableBody.querySelectorAll('tr.group');
+
+    rows.forEach(row => {
+
+        const heldInput = row.querySelector('input[data-field="held"]');
+        const absentInput = row.querySelector('input[data-field="absent"]');
+
+        const code = heldInput.dataset.code;
+        const type = heldInput.dataset.type;
+
+        const key = code + "_" + type;
+
+        if (parsedMap[key]) {
+            heldInput.value = parsedMap[key].held;
+            absentInput.value = parsedMap[key].absent;
+        }
+    });
+
+    updateAttendanceCalculations();
+    alert("Attendance auto-filled successfully.");
 }

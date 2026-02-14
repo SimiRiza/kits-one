@@ -212,6 +212,11 @@
 
             <!-- Tool 4: Bunk Buffer -->
             <div id="tab-attend" class="tab-content max-w-2xl mx-auto space-y-6">
+                <!-- Empty State for Table -->
+                <div id="att-empty-state"
+                    class="theme-card text-center p-8 rounded-xl border border-dashed theme-border">
+                    <p class="text-slate-400 font-bold">Select Branch and Semester to load subjects</p>
+                </div>
                 <!-- Stats Cards -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div class="bg-indigo-600 p-6 rounded-2xl text-white text-center flex flex-col justify-center">
@@ -230,6 +235,30 @@
                     </div>
                 </div>
 
+                <!-- 🔹 UMS Auto-Fill Section -->
+<div class="theme-card p-5 rounded-xl border theme-border">
+    <textarea id="ums-paste"
+    rows="6"
+    placeholder="Quick mode? We’ll auto-fill Held & Absent for you.
+Open KITS UMS → Attendance Report and paste the copied text here.
+
+Desktop: Ctrl + A → Ctrl + C  & Mobile: Select All → Copy → Paste
+
+You can still edit everything manually below."
+
+    class="theme-input w-full border theme-border rounded-xl text-sm font-medium resize-none focus:ring-2 focus:ring-indigo-500 outline-none transition"
+    style="padding: 16px 18px; box-sizing: border-box;">
+</textarea>
+
+
+    <button onclick="parseUmsAttendance()"
+        class="mt-3 w-full py-2 bg-indigo-600 text-white text-sm font-bold rounded-xl hover:bg-indigo-700 transition">
+        Auto Fill From UMS
+    </button>
+
+</div>
+
+
                 <!-- Table -->
                 <div id="att-table-container"
                     class="theme-card border theme-border rounded-xl overflow-hidden shadow-sm hidden">
@@ -246,12 +275,6 @@
                             <!-- JS Populated -->
                         </tbody>
                     </table>
-                </div>
-
-                <!-- Empty State for Table -->
-                <div id="att-empty-state"
-                    class="theme-card text-center p-8 rounded-xl border border-dashed theme-border">
-                    <p class="text-slate-400 font-bold">Select Branch and Semester to load subjects</p>
                 </div>
 
                 <!-- Future Planner (Mini) -->

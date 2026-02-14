@@ -62,18 +62,28 @@ const COURSE_DATA = {
             { n: "SEA/SAA-3", c: 1 },
             { n: "ETS-3", c: 1 }
         ],
-        "Sem 4": [
-            { n: "DMPS", c: 3 },
-            { n: "WP", c: 4 },
-            { n: "DBMS", c: 4 },
-            { n: "AI", c: 3 },
-            { n: "PP", c: 4 },
-            { n: "SIS", c: 1 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+       /*
+ * Added `code` field for each subject.
+ * Purpose:
+ * - Enables stable UMS auto-fill using official course codes.
+ * - Avoids fragile name-based matching.
+ * - Does NOT affect SGPA, Planner, or UI display logic.
+ * - Currently implemented for Sem 4 (safe, isolated change).
+ */
+"Sem 4": [
+    { n: "DMPS", code: "U24MH401", c: 3 },
+    { n: "WP", code: "U24CS402", c: 4 },
+    { n: "DBMS", code: "U24CS403", c: 4 },
+    { n: "AI", code: "U24CS404", c: 3 },
+    { n: "PP", code: "U24CS405", c: 4 },
+    { n: "SIS", code: "U24VA406A", c: 1 },
+ /* Explicitly mark standalone LABS as type "lab" so that UMS auto-fill matches correctly.*/
+{ n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },
+    { n: "Practicum-4", c: 1 },
+    { n: "SEA/SAA-4", c: 1 },
+    { n: "ETS-4", c: 1 }
+],
+
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "ML", c: 4 },
@@ -765,18 +775,24 @@ const COURSE_DATA = {
             { n: "SEA/SAA-3", c: 1 },
             { n: "ETS-3", c: 1 }
         ],
-        "Sem 4": [
-            { n: "DMPS", c: 3 },
-            { n: "DAA", c: 4 },
-            { n: "PP", c: 4 },
-            { n: "OS", c: 4 },
-            { n: "CN", c: 3 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+        /*
+ * IT - Semester 4
+ * Added course codes for robust UMS auto-fill matching.
+ * Type explicitly defined where required.
+ */
+"Sem 4": [
+    { n: "DMPS", c: 3, code: "U24MH401", type: "theory" },
+    { n: "DAA", c: 4, code: "U24IT402" }, // 4 credits → auto splits theory+lab
+    { n: "PP", c: 4, code: "U24IT403" },  // auto split
+    { n: "OS", c: 4, code: "U24IT404" },  // auto split
+    { n: "CN", c: 3, code: "U24IT405", type: "theory" },
+    { n: "QALR", c: 2, code: "U24VA406A", type: "theory" },
+    // Standalone Lab — must explicitly define type
+    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
+    { n: "Practicum-4", c: 1 },
+    { n: "SEA/SAA-4", c: 1 },
+    { n: "ETS-4", c: 1 }
+],
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "ML", c: 4 },
