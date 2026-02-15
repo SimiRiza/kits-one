@@ -751,18 +751,18 @@ const COURSE_DATA = {
             { n: "SEA/SAA-1", c: 1 },
             { n: "ETS-1", c: 1 }
         ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
+"Sem 2": [
+    { n: "MTVC", c: 3, code: "U24MH201", type: "theory" },
+    { n: "EP", c: 4, code: "U24PY202B" }, // auto split
+    { n: "COA", c: 3, code: "U24IT203", type: "theory" },
+    { n: "DSTC", c: 4, code: "U24IT204" }, // auto split
+    { n: "BEE", c: 4, code: "U24EE205B" }, // auto split
+    { n: "ILMS", c: 1, code: "U24AE207", type: "lab" }, // <-- IMPORTANT
+    { n: "PSD Lab-1", c: 1, code: "U24SE208", type: "lab" },
+    { n: "Practicum-2", c: 1 },
+    { n: "SEA/SAA-2", c: 1 },
+    { n: "ETS-2", c: 1 }
+],
         "Sem 3": [
             { n: "AI", c: 3 },
             { n: "ADS", c: 4 },
