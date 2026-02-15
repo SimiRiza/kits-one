@@ -432,7 +432,6 @@ const COURSE_DATA = {
     { n: "DAA", code: "U24CN403", c: 3 },
     { n: "PP", code: "U24CN405", c: 4 },
     { n: "I & V", code: "U24CN404", c: 4 },
-    { n: "PP", code: "U24CN405", c: 4 },
     { n: "QALR", code: "U24VA406A", c: 2 },
     { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
     { n: "Practicum-4", c: 1 },
