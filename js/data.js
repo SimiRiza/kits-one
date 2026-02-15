@@ -781,16 +781,16 @@ const COURSE_DATA = {
  * Added course codes for robust UMS auto-fill matching.
  */
 "Sem 4": [
-    { n: "DMPS", c: 3, code: "U24MH401", type: "theory" },
-    { n: "DAA", c: 4, code: "U24IT402" }, // 4 credits → auto splits theory+lab
-    { n: "PP", c: 4, code: "U24IT403" },  // auto split
-    { n: "OS", c: 4, code: "U24IT404" },  // auto split
-    { n: "CN", c: 3, code: "U24IT405", type: "theory" },
-    { n: "QALR", c: 2, code: "U24VA406A", type: "theory" },
-    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },// mention standalone labs explicitly
-    { n: "Practicum-4", c: 1 },
-    { n: "SEA/SAA-4", c: 1 },
-    { n: "ETS-4", c: 1 }
+    { n: "DMPS", code: "U24MH401D", c: 3 },
+    { n: "DBMS", code: "U24CN402", c: 4 },
+    { n: "DAA", code: "U24CN403", c: 3 },
+    { n: "I & V", code: "U24CN404", c: 4 },
+    { n: "PP", code: "U24CN405", c: 4 },
+    { n: "QALR", code: "U24VA406A", c: 2 },
+    { n: "PSD Lab-3", code: "U24SE407", c: 1 },
+    { n: "Practicum-4", code: "U24EL408", c: 1 },
+    { n: "SEA/SAA-4", code: "U24VA409XXXXX", c: 1 },
+    { n: "ETS-4", code: "U24AE410", c: 1 }
 ],
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
