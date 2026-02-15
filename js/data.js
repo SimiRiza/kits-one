@@ -76,14 +76,12 @@ const COURSE_DATA = {
     { n: "DBMS", code: "U24CS403", c: 4 },
     { n: "AI", code: "U24CS404", c: 3 },
     { n: "PP", code: "U24CS405", c: 4 },
-    { n: "SIS", code: "U24VA406A", c: 1 },
- /* Explicitly mark standalone LABS as type "lab" so that UMS auto-fill matches correctly.*/
-{ n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },
+    { n: "SIS", code: "U24VA406A", c: 1 },/* Explicitly mark standalone LABS as type "lab" so that UMS auto-fill matches correctly.*/
+    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },
     { n: "Practicum-4", c: 1 },
     { n: "SEA/SAA-4", c: 1 },
     { n: "ETS-4", c: 1 }
 ],
-
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "ML", c: 4 },
@@ -424,19 +422,23 @@ const COURSE_DATA = {
             { n: "SEA/SAA-3", c: 1 },
             { n: "ETS-3", c: 1 }
         ],
-        "Sem 4": [
-    { n: "DMPS", c: 3, code: "U24MH401" },
-    { n: "DBMS", c: 4, code: "U24CN402" },
-    { n: "DAA", c: 3, code: "U24CN403" },
-    { n: "I & V", c: 4, code: "U24CN404" }, 
-    { n: "PP", c: 4, code: "U24CN405" },
-    { n: "QALR", c: 2, code: "U24VA406A" },
+/*
+ * CSN - Semester 4
+ * Added course codes for robust UMS auto-fill matching.
+ */
+"Sem 4": [
+    { n: "DMPS", code: "U24MH401D", c: 3 },
+    { n: "DBMS", code: "U24CN402", c: 4 },
+    { n: "DAA", code: "U24CN403", c: 3 },
+    { n: "PP", code: "U24CN405", c: 4 },
+    { n: "I & V", code: "U24CN404", c: 4 },
+    { n: "PP", code: "U24CN405", c: 4 },
+    { n: "QALR", code: "U24VA406A", c: 2 },
     { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
     { n: "Practicum-4", c: 1 },
     { n: "SEA/SAA-4", c: 1 },
     { n: "ETS-4", c: 1 }
 ],
-
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "AIML", c: 4 },
@@ -781,16 +783,16 @@ const COURSE_DATA = {
  * Added course codes for robust UMS auto-fill matching.
  */
 "Sem 4": [
-    { n: "DMPS", code: "U24MH401D", c: 3 },
-    { n: "DBMS", code: "U24CN402", c: 4 },
-    { n: "DAA", code: "U24CN403", c: 3 },
-    { n: "I & V", code: "U24CN404", c: 4 },
-    { n: "PP", code: "U24CN405", c: 4 },
-    { n: "QALR", code: "U24VA406A", c: 2 },
-    { n: "PSD Lab-3", code: "U24SE407", c: 1 },
-    { n: "Practicum-4", code: "U24EL408", c: 1 },
-    { n: "SEA/SAA-4", code: "U24VA409XXXXX", c: 1 },
-    { n: "ETS-4", code: "U24AE410", c: 1 }
+    { n: "DMPS", c: 3, code: "U24MH401", type: "theory" },
+    { n: "DAA", c: 4, code: "U24IT402" }, // 4 credits → auto splits theory+lab
+    { n: "PP", c: 4, code: "U24IT403" },  // auto split
+    { n: "OS", c: 4, code: "U24IT404" },  // auto split
+    { n: "CN", c: 3, code: "U24IT405", type: "theory" },
+    { n: "QALR", c: 2, code: "U24VA406A", type: "theory" },
+    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },// Standalone Lab — must explicitly define type
+    { n: "Practicum-4", c: 1 },
+    { n: "SEA/SAA-4", c: 1 },
+    { n: "ETS-4", c: 1 }
 ],
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
