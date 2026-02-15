@@ -60,11 +60,10 @@ function generateSubjects(branch, sem) {
         const name = c.n;
         const credits = c.c;
         const code = c.code; // Added for stable UMS matching using course code
-        // Exclusion List (No attendance needed usually)
         if (name.includes("Practicum") ||
             name.includes("SEA/SAA") ||
             name.includes("ETS") ||
-            name.includes("Sports") ||
+            // name.includes("Sports") ||
             name.includes("NSS") ||
             name.includes("NCC")) {
             return;
