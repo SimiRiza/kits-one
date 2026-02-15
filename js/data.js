@@ -427,7 +427,7 @@ const COURSE_DATA = {
  * Added course codes for robust UMS auto-fill matching.
  */
 "Sem 4": [
-    { n: "DMPS", code: "U24MH401D", c: 3 },
+    { n: "DMPS", code: "U24MH401", c: 3 },
     { n: "DBMS", code: "U24CN402", c: 4 },
     { n: "DAA", code: "U24CN403", c: 3 },
     { n: "PP", code: "U24CN405", c: 4 },
