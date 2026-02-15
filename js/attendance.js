@@ -71,18 +71,13 @@ function generateSubjects(branch, sem) {
         }
 
         if (credits === 4) {
-
     /*
      * Extended subject object with:
-     * - `code`: official course identifier (e.g., U24CS402)
-     * - `type`: distinguishes theory vs lab
-     *
-     * Purpose:
-     * Enables robust UMS auto-fill using course code instead of
-     * fragile name-based matching.
+     * -code: official course identifier (e.g., U24CS402)
+     * -type: distinguishes theory vs lab
+     * Enables robust UMS auto-fill using course code 
      * Does NOT affect UI or SGPA logic.
      */
-
     generated.push({
         name: `${name} Theory`,
         code: code,        // Added: stable course identifier
@@ -103,7 +98,7 @@ function generateSubjects(branch, sem) {
 
     /*
      * For non-4 credit subjects (single component),
-     * we still attach `code` and default `type` as "theory".
+     * we still attach 'code' and default 'type' as "theory".
      * This ensures uniform internal structure for matching.
      */
 
@@ -116,7 +111,6 @@ function generateSubjects(branch, sem) {
 });
 
 }
-
     });
 
     return generated;
@@ -157,7 +151,7 @@ function saveAttendanceData(data) {
 
 function renderAttendanceTable() {
     const data = getAttendanceData();
-// Backward compatibility: ensure saved data has code & type
+// Safe backward compatibility (match by name, not index)
 if (data && Array.isArray(data)) {
 
     const freshSubjects = generateSubjects(
@@ -165,12 +159,17 @@ if (data && Array.isArray(data)) {
         document.getElementById('semester-select').value
     );
 
-    data.forEach((s, index) => {
-        if (!s.code) s.code = freshSubjects[index]?.code || null;
-        if (!s.type) s.type = freshSubjects[index]?.type || "theory";
+    data.forEach(oldSub => {
+
+        // Find matching subject by name
+        const match = freshSubjects.find(f => f.name === oldSub.name);
+
+        if (match) {
+            oldSub.code = match.code;
+            oldSub.type = match.type;
+        }
     });
 }
-
 
     if (!data) {
         // No selection made
@@ -185,61 +184,66 @@ if (data && Array.isArray(data)) {
     attEmptyState.classList.add('hidden');
 
     // Render Table Rows (Desktop) & Mobile Cards
+    // Added data-code and data-type attributes to enable reliable course-based attendance matching in both desktop and mobile view
     attTableBody.innerHTML = data.map((s, i) => `
         <tr class="group border-b border-slate-100 hover:bg-slate-50 transition-colors hidden md:table-row">
-    <td class="p-4 font-bold text-slate-700 text-sm">
-        ${s.name}
-    </td>
-    <td class="p-4 text-center">
-        <input type="number"
-            min="0"
-            data-idx="${i}"
-            data-code="${s.code || ''}"
-            data-type="${s.type || ''}"
-            data-field="held"
-            value="${s.held}"
-            class="w-16 p-2 text-center bg-white border border-slate-200 rounded-lg font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none transition text-sm">
-    </td>
-    <td class="p-4 text-center">
-        <input type="number"
-            min="0"
-            data-idx="${i}"
-            data-code="${s.code || ''}"
-            data-type="${s.type || ''}"
-            data-field="absent"
-            value="${s.absent}"
-            class="w-16 p-2 text-center bg-white border border-red-200 text-red-600 rounded-lg font-bold focus:ring-2 focus:ring-red-500 outline-none transition text-sm">
-    </td>
-    <td class="p-4 text-right">
-        <span id="att-pct-${i}" class="font-bold text-slate-400 text-sm">0%</span>
-    </td>
-</tr>
-
-        
-        <!-- Mobile Card View -->
-        <tr class="md:hidden border-b theme-border last:border-0">
-            <td colspan="4" class="p-4">
-                <div class="flex flex-col gap-3">
-                    <div class="flex justify-between items-start">
-                        <span class="font-bold theme-text text-base">${s.name}</span>
-                        <span id="att-pct-mobile-${i}" class="font-bold text-slate-400 text-sm px-2 py-1 rounded theme-bg">0%</span>
-                    </div>
-                    
-                    <div class="grid grid-cols-2 gap-4">
-                        <div>
-                            <label class="block text-xs font-bold theme-muted-light uppercase mb-1">Held</label>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" data-idx="${i}" data-field="held" value="${s.held}" 
-                                class="theme-input w-full p-3 text-center border theme-border rounded-xl font-bold focus:ring-2 focus:ring-indigo-500 outline-none text-lg">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-bold text-red-300 uppercase mb-1">Absent</label>
-                            <input type="number" inputmode="numeric" pattern="[0-9]*" min="0" data-idx="${i}" data-field="absent" value="${s.absent}" 
-                                class="w-full p-3 text-center bg-red-50 border border-red-100 rounded-xl font-bold text-red-600 focus:ring-2 focus:ring-red-500 outline-none text-lg">
-                        </div>
-                    </div>
-                </div>
+<td class="p-4 font-bold text-slate-700 text-sm">
+                ${s.name}
+            </td>
+            <td class="p-4 text-center">
+                <input type="number" min="0" data-idx="${i}" data-code="${s.code || ''}" data-type="${s.type || ''}" data-field="held" value="${s.held}" 
+                    class="w-16 p-2 text-center bg-white border border-slate-200 rounded-lg font-bold text-slate-700 focus:ring-2 focus:ring-indigo-500 outline-none transition text-sm">
+            </td>
+            <td class="p-4 text-center">
+                <input type="number" min="0" data-idx="${i}" data-code="${s.code || ''}" data-type="${s.type || ''}" data-field="absent" value="${s.absent}" 
+                    class="w-16 p-2 text-center bg-white border border-red-200 text-red-600 rounded-lg font-bold focus:ring-2 focus:ring-red-500 outline-none transition text-sm">
+            </td>
+            <td class="p-4 text-right">
+                <span id="att-pct-${i}" class="font-bold text-slate-400 text-sm">0%</span>
             </td>
         </tr>
+
+
+<!-- Mobile Card View -->
+<tr class="md:hidden border-b theme-border last:border-0">
+    <td colspan="4" class="p-4">
+        <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-start">
+                <span class="font-bold theme-text text-base">${s.name}</span>
+                <span id="att-pct-mobile-${i}" class="font-bold text-slate-400 text-sm px-2 py-1 rounded theme-bg">0%</span>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-xs font-bold theme-muted-light uppercase mb-1">Held</label>
+                    <input type="number"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        min="0"
+                        data-idx="${i}"
+                        data-code="${s.code || ''}"
+                        data-type="${s.type || ''}"
+                        data-field="held"
+                        value="${s.held}"
+                        class="theme-input w-full p-3 text-center border theme-border rounded-xl font-bold focus:ring-2 focus:ring-indigo-500 outline-none text-lg">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-red-300 uppercase mb-1">Absent</label>
+                    <input type="number"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        min="0"
+                        data-idx="${i}"
+                        data-code="${s.code || ''}"
+                        data-type="${s.type || ''}"
+                        data-field="absent"
+                        value="${s.absent}"
+                        class="w-full p-3 text-center bg-red-50 border border-red-100 rounded-xl font-bold text-red-600 focus:ring-2 focus:ring-red-500 outline-none text-lg">
+                </div>
+            </div>
+        </div>
+    </td>
+</tr>
     `).join('');
 
     updateAttendanceCalculations(data);
@@ -392,7 +396,6 @@ function resetAttendanceData() {
 }
 /*
  * UMS Auto-Fill (Code-Based Matching)
- * ------------------------------------
  * Uses official course code + type (theory/lab) for matching.
  * Avoids fragile name-based comparisons.
  * Fully overwrites existing attendance safely.

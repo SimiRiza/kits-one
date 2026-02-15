@@ -62,7 +62,7 @@ const COURSE_DATA = {
             { n: "SEA/SAA-3", c: 1 },
             { n: "ETS-3", c: 1 }
         ],
-       /*
+ /*
  * Added `code` field for each subject.
  * Purpose:
  * - Enables stable UMS auto-fill using official course codes.
@@ -425,17 +425,18 @@ const COURSE_DATA = {
             { n: "ETS-3", c: 1 }
         ],
         "Sem 4": [
-    { n: "DBMS", c: 4, code: "U24CN402" },
-    { n: "DAA", c: 4, code: "U24CN403" },
-    { n: "IWV", c: 4, code: "U24CN404" }, // Internet Works & Virtualization
-    { n: "PP", c: 4, code: "U24CN405" },
     { n: "DMPS", c: 3, code: "U24MH401" },
+    { n: "DBMS", c: 4, code: "U24CN402" },
+    { n: "DAA", c: 3, code: "U24CN403" },
+    { n: "I & V", c: 4, code: "U24CN404" }, 
+    { n: "PP", c: 4, code: "U24CN405" },
     { n: "QALR", c: 2, code: "U24VA406A" },
     { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
     { n: "Practicum-4", c: 1 },
     { n: "SEA/SAA-4", c: 1 },
     { n: "ETS-4", c: 1 }
 ],
+
         "Sem 5": [
             { n: "M-Elective 1", c: 3 },
             { n: "AIML", c: 4 },
@@ -757,7 +758,7 @@ const COURSE_DATA = {
     { n: "COA", c: 3, code: "U24IT203", type: "theory" },
     { n: "DSTC", c: 4, code: "U24IT204" }, // auto split
     { n: "BEE", c: 4, code: "U24EE205B" }, // auto split
-    { n: "ILMS", c: 1, code: "U24AE207", type: "lab" }, // <-- IMPORTANT
+    { n: "ILMS", c: 1, code: "U24AE207", type: "lab" }, // mention standalone labs explicitly
     { n: "PSD Lab-1", c: 1, code: "U24SE208", type: "lab" },
     { n: "Practicum-2", c: 1 },
     { n: "SEA/SAA-2", c: 1 },
@@ -775,10 +776,9 @@ const COURSE_DATA = {
             { n: "SEA/SAA-3", c: 1 },
             { n: "ETS-3", c: 1 }
         ],
-        /*
+/*
  * IT - Semester 4
  * Added course codes for robust UMS auto-fill matching.
- * Type explicitly defined where required.
  */
 "Sem 4": [
     { n: "DMPS", c: 3, code: "U24MH401", type: "theory" },
@@ -787,8 +787,7 @@ const COURSE_DATA = {
     { n: "OS", c: 4, code: "U24IT404" },  // auto split
     { n: "CN", c: 3, code: "U24IT405", type: "theory" },
     { n: "QALR", c: 2, code: "U24VA406A", type: "theory" },
-    // Standalone Lab — must explicitly define type
-    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
+    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },// mention standalone labs explicitly
     { n: "Practicum-4", c: 1 },
     { n: "SEA/SAA-4", c: 1 },
     { n: "ETS-4", c: 1 }
