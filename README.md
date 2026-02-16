@@ -17,6 +17,8 @@ KITS One is a complete academic companion designed to take the guesswork out of 
 - **CGPA to % Converter:** One-tap conversion using the official `(CGPA - 0.5) * 10` formula.
 - **Dark Mode & Mobile-First:** Because we check our grades late at night and mostly on our phones.
 - **NEW:** Built-in guided help for each feature (beginner-friendly onboarding)
+- **NEW: Attendance Autofill:** Paste your UMS attendance table and auto-fill Held/Absent values instantly using pattern matching. Manual entry still supported.
+
 
 ## Technical Stack
 
@@ -26,7 +28,7 @@ KITS One is a complete academic companion designed to take the guesswork out of 
 
 ## Contributors
 
-- **[Simi Riza](https://github.com//SimiRiza)** – Attendance autofill feature (UMS table parsing & input automation)
+- **[Simi Riza](https://github.com/SimiRiza)** – Attendance autofill feature (UMS table parsing & input automation)
 
 
 ## License
