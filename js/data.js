@@ -538,43 +538,47 @@ const COURSE_DATA = {
             { n: "ETS-4", c: 1 }
         ],
         "Sem 5": [
-            { n: "M-Elective 1", c: 3 },
-            { n: "AIoT", c: 4 },
-            { n: "ATCD", c: 3 },
-            { n: "DAA", c: 4 },
-            { n: "M Basket", c: 3 },
-            { n: "UHV-II", c: 2 },
-            { n: "FSD Lab", c: 1 },
-            { n: "Tech. English", c: 1 },
-            { n: "Seminar", c: 1 },
-            { n: "ETS-5", c: 1 }
-        ],
-        "Sem 6": [
-            { n: "P-Elective 1", c: 3 },
-            { n: "IoTF", c: 4 },
-            { n: "DevOps", c: 3 },
-            { n: "Industrial IoT", c: 4 },
-            { n: "S&E Basket", c: 3 },
-            { n: "EITK", c: 2 },
-            { n: "DevOps Lab", c: 1 },
-            { n: "Mini Project", c: 1 },
-            { n: "ETS-6", c: 1 }
-        ],
-        "Sem 7": [
-            { n: "M-Elective-II", c: 3 },
-            { n: "P-Elective-II", c: 3 },
-            { n: "CASE", c: 4 },
-            { n: "PSIoT", c: 3 },
-            { n: "CPS", c: 3 },
-            { n: "Internship", c: 1 },
-            { n: "Major Project-I", c: 4 }
-        ],
-        "Sem 8": [
-            { n: "M-Elective-III", c: 3 },
-            { n: "P-Elective-III", c: 3 },
-            { n: "P-Elective-IV", c: 3 },
-            { n: "Major Project-II", c: 6 }
-        ]
+    { n: "M-Elective 1", code: "U24OE501XX", c: 3 },
+    { n: "AIoT", code: "U24IN502", c: 4 },
+    { n: "ATCD", code: "U24IN503", c: 3 },
+    { n: "DAA", code: "U24IN504", c: 4 },
+    { n: "M Basket", code: "U24ST505X", c: 3 },
+    { n: "UHV-II", code: "U24IK506B", c: 2 },
+    { n: "FSD Lab", code: "U24IN507", c: 1, type: "lab" },
+    { n: "Tech. English", code: "U24MH508", c: 1 },
+    { n: "Seminar", code: "U24IN509", c: 1 },
+    { n: "ETS-5", code: "U24AE510", c: 1 }
+],
+
+"Sem 6": [
+    { n: "P-Elective 1", code: "U24IN601X", c: 3 },
+    { n: "IoTF", code: "U24IN602", c: 4 },
+    { n: "DevOps", code: "U24IN603", c: 3 },
+    { n: "Industrial IoT", code: "U24IN604", c: 4 },
+    { n: "S&E Basket", code: "U24MB605X", c: 3 },
+    { n: "EITK", code: "U24IK606A", c: 2 },
+    { n: "DevOps Lab", code: "U24IN607", c: 1, type: "lab" },
+    { n: "Mini Project", code: "U24IN608", c: 1, type: "lab" },
+    { n: "ETS-6", code: "U24AE609", c: 1 }
+],
+
+"Sem 7": [
+    { n: "M-Elective-II", code: "U24OE701YYX", c: 3 },
+    { n: "P-Elective-II", code: "U24IN702", c: 3 },
+    { n: "CASE", code: "U24IN703", c: 4 },
+    { n: "PSIoT", code: "U24IN704", c: 3 },
+    { n: "CPS", code: "U24IN705", c: 3 },
+    { n: "Internship", code: "U24IN706", c: 1, type: "lab" },
+    { n: "Major Project-I", code: "U24IN707", c: 4 }
+],
+
+"Sem 8": [
+    { n: "M-Elective-III", code: "U24OE801YYX", c: 3 },
+    { n: "P-Elective-III", code: "U24IN802", c: 3 },
+    { n: "P-Elective-IV", code: "U24IN803", c: 3 },
+    { n: "Major Project-II", code: "U24IN804", c: 6 }
+]
+
     },
     "ECE": {
         "Sem 1": [
