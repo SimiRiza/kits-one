@@ -174,43 +174,46 @@ const COURSE_DATA = {
             { n: "ETS-4", c: 1 }
         ],
         "Sem 5": [
-            { n: "M-Elective 1", c: 3 },
-            { n: "WP", c: 4 },
-            { n: "DAA", c: 3 },
-            { n: "ML", c: 4 },
-            { n: "M Basket", c: 3 },
-            { n: "UHV-II", c: 2 },
-            { n: "PSD Lab-4", c: 1 },
-            { n: "Tech. English", c: 1 },
-            { n: "Seminar", c: 1 },
-            { n: "ETS-5", c: 1 }
-        ],
-        "Sem 6": [
-            { n: "P-Elective 1", c: 3 },
-            { n: "CV & IP", c: 3 },
-            { n: "DL", c: 4 },
-            { n: "DevOps", c: 4 },
-            { n: "S&E Basket", c: 3 },
-            { n: "EITK", c: 2 },
-            { n: "PSD Lab-5", c: 1 },
-            { n: "Mini Project", c: 1 },
-            { n: "ETS-6", c: 1 }
-        ],
-        "Sem 7": [
-            { n: "M-Elective-II", c: 3 },
-            { n: "P-Elective-II", c: 3 },
-            { n: "BDA", c: 4 },
-            { n: "CC", c: 3 },
-            { n: "EH", c: 3 },
-            { n: "Internship", c: 1 },
-            { n: "Major Project-I", c: 4 }
-        ],
-        "Sem 8": [
-            { n: "M-Elective-III", c: 3 },
-            { n: "P-Elective-III", c: 3 },
-            { n: "P-Elective-IV", c: 3 },
-            { n: "Major Project-II", c: 6 }
-        ]
+    { n: "M-Elective 1", code: "U24OE501YYX", c: 3 },
+    { n: "WP", code: "U24AI502", c: 4 },
+    { n: "DAA", code: "U24AI503", c: 3 },
+    { n: "ML", code: "U24AI504", c: 4 },
+    { n: "M Basket", code: "U24MB505X", c: 3 },
+    { n: "UHV-II", code: "U24IK506B", c: 2 },
+    { n: "PSD Lab-4", code: "U24AI507", c: 1, type: "lab" },
+    { n: "Tech. English", code: "U24MH508", c: 1 },
+    { n: "Seminar", code: "U24AI509", c: 1 },
+    { n: "ETS-5", code: "U24AE510", c: 1 }
+],
+
+"Sem 6": [
+    { n: "P-Elective 1", code: "U24AI601X", c: 3 },
+    { n: "CV & IP", code: "U24AI602", c: 3 },
+    { n: "DL", code: "U24AI603", c: 4 },
+    { n: "DevOps", code: "U24AI604", c: 4 },
+    { n: "S&E Basket", code: "U24ST605X", c: 3 },
+    { n: "EITK", code: "U24IK606B", c: 2 },
+    { n: "PSD Lab-5", code: "U24AI607", c: 1, type: "lab" },
+    { n: "Mini Project", code: "U24AI608", c: 1, type: "lab" },
+    { n: "ETS-6", code: "U24AE609", c: 1 }
+],
+
+"Sem 7": [
+    { n: "M-Elective-II", code: "U24OE701YYX", c: 3 },
+    { n: "P-Elective-II", code: "U24AI702X", c: 3 },
+    { n: "BDA", code: "U24AI703", c: 4 },
+    { n: "CC", code: "U24AI704", c: 3 },
+    { n: "EH", code: "U24AI705", c: 3 },
+    { n: "Internship", code: "U24AI706", c: 1, type: "lab" },
+    { n: "Major Project-I", code: "U24AI707", c: 4 }
+],
+
+"Sem 8": [
+    { n: "M-Elective-III", code: "U24OE801YYX", c: 3 },
+    { n: "P-Elective-III", code: "U24AI802X", c: 3 },
+    { n: "P-Elective-IV", code: "U24AI803X", c: 3 },
+    { n: "Major Project-II", code: "U24AI804", c: 6 }
+]
     },
     "ME": {
         "Sem 1": [
