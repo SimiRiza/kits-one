@@ -399,6 +399,13 @@ function resetAttendanceData() {
  * Avoids fragile name-based comparisons.
  * Fully overwrites existing attendance safely.
  */
+
+// Normalize course code by removing single trailing letter (A/B/C etc.)
+function normalizeCode(code) {
+    if (!code) return code;
+    return code.replace(/([0-9])([A-Z])$/, '$1');
+}
+
 function parseUmsAttendance() {
 
     const textArea = document.getElementById("ums-paste");
@@ -415,10 +422,11 @@ function parseUmsAttendance() {
 
     attendanceRows.forEach(line => {
 
-        const codeMatch = line.match(/U\d+[A-Z]+\d+[A-Z]?/i);
+        const codeMatch = line.match(/U\d+[A-Z]+\d+[A-Z]*/i);
         if (!codeMatch) return;
 
-        const code = codeMatch[0].toUpperCase();
+        const rawCode = codeMatch[0].toUpperCase();
+        const code = normalizeCode(rawCode);
 
         let type = "theory";
         if (line.toLowerCase().includes("lab")) type = "lab";
@@ -445,7 +453,9 @@ function parseUmsAttendance() {
         const heldInput = row.querySelector('input[data-field="held"]');
         const absentInput = row.querySelector('input[data-field="absent"]');
 
-        const code = heldInput.dataset.code;
+        const rawCode = heldInput.dataset.code;
+        const code = normalizeCode(rawCode);
+
         const type = heldInput.dataset.type;
 
         const key = code + "_" + type;

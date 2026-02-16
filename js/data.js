@@ -63,8 +63,7 @@ const COURSE_DATA = {
         { n: "DBMS", code: "U24CS403", c: 4 },
         { n: "AI", code: "U24CS404", c: 3 },
         { n: "PP", code: "U24CS405", c: 4 },
-        { n: "SIS", code: "U24VA406A", c: 1 },//default to "theory" in attendance.js so not required to explicitly mark as type "theory"
-        // course-code match with UMS data
+        { n: "SIS", code: "U24VA406B", c: 1 },//default to "theory" in attendance.js so not required to explicitly mark as type "theory"
         { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },// stanalone alone labs marked seperately 
     ],
 "Sem 5": [
@@ -374,7 +373,7 @@ const COURSE_DATA = {
 ],
 
 "Sem 4": [
-    { n: "DMPS", code: "U24MH401", c: 3 },// match with UMS data
+    { n: "DMPS", code: "U24MH401D", c: 3 },
     { n: "DBMS", code: "U24CN402", c: 4 },
     { n: "DAA", code: "U24CN403", c: 3 },
     { n: "PP", code: "U24CN405", c: 4 },
