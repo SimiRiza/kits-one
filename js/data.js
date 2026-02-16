@@ -27,62 +27,45 @@ const BRANCH_MAPPING = {
 // n: Name, c: Credits
 const COURSE_DATA = {
     "CSE": {
-        "Sem 1": [
-            { n: "DCODE", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "PPSC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "Practicum-1", c: 1 },
-            { n: "SEA/SAA-1", c: 1 },
-            { n: "ETS-1", c: 1 }
-        ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EC", c: 4 },
-            { n: "OS", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "ECRW", c: 2 },
-            { n: "Sports & Yoga", c: 1 },
-            { n: "EGCAD", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
-        "Sem 3": [
-            { n: "SE", c: 3 },
-            { n: "TOC", c: 3 },
-            { n: "ADS", c: 4 },
-            { n: "CN", c: 3 },
-            { n: "OOP Through Java", c: 4 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-2", c: 1 },
-            { n: "Practicum-3", c: 1 },
-            { n: "SEA/SAA-3", c: 1 },
-            { n: "ETS-3", c: 1 }
-        ],
- /*
- * Added `code` field for each subject.
- * Purpose:
- * - Enables stable UMS auto-fill using official course codes.
- * - Avoids fragile name-based matching.
- * - Does NOT affect SGPA, Planner, or UI display logic.
- * - Currently implemented for Sem 4 (safe, isolated change).
- */
-"Sem 4": [
-    { n: "DMPS", code: "U24MH401", c: 3 },
-    { n: "WP", code: "U24CS402", c: 4 },
-    { n: "DBMS", code: "U24CS403", c: 4 },
-    { n: "AI", code: "U24CS404", c: 3 },
-    { n: "PP", code: "U24CS405", c: 4 },
-    { n: "SIS", code: "U24VA406A", c: 1 },/* Explicitly mark standalone LABS as type "lab" so that UMS auto-fill matches correctly.*/
-    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },
-    { n: "Practicum-4", c: 1 },
-    { n: "SEA/SAA-4", c: 1 },
-    { n: "ETS-4", c: 1 }
-],
+    "Sem 1": [
+        { n: "DCODE", code: "U24MH101", c: 3 },
+        { n: "EP", code: "U24PY102C", c: 4 },
+        { n: "COA", code: "U24CS103", c: 3 },
+        { n: "PPSC", code: "U24CS104", c: 4 },
+        { n: "BEE", code: "U24EE105C", c: 4 },
+        { n: "ILMS", code: "U24AE107", c: 1, type: "lab" },
+    ],
+
+    "Sem 2": [
+        { n: "MTVC", code: "U24MH201", c: 3 },
+        { n: "EC", code: "U24CY202C", c: 4 },
+        { n: "OS", code: "U24CS203", c: 3 },
+        { n: "DSTC", code: "U24CS204", c: 4 },
+        { n: "ECRW", code: "U24MH205", c: 2 },
+        { n: "Sports & Yoga", code: "U24VA206", c: 1, type: "lab" },
+        { n: "EGCAD", code: "U24ME207", c: 1, type: "lab" },
+        { n: "PSD Lab-1", code: "U24SE208", c: 1, type: "lab" },
+    ],
+
+    "Sem 3": [
+        { n: "SE", code: "U24CS301", c: 3 },
+        { n: "TOC", code: "U24CS302", c: 3 },
+        { n: "ADS", code: "U24CS303", c: 4 },
+        { n: "CN", code: "U24CS304", c: 3 },
+        { n: "OOP Through Java", code: "U24CS305", c: 4 },
+        { n: "QALR", code: "U24VA306A", c: 2 },
+        { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" },
+    ],
+
+    "Sem 4": [
+        { n: "DMPS", code: "U24MH401", c: 3 },
+        { n: "WP", code: "U24CS402", c: 4 },
+        { n: "DBMS", code: "U24CS403", c: 4 },
+        { n: "AI", code: "U24CS404", c: 3 },
+        { n: "PP", code: "U24CS405", c: 4 },
+        { n: "SIS", code: "U24VA406B", c: 1, type: "lab" },
+        { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" },
+    ],
 "Sem 5": [
     { n: "M-Elective 1", code: "U24OE501YYX", c: 3 },
     { n: "ML", code: "U24CS502", c: 4 },
@@ -93,7 +76,6 @@ const COURSE_DATA = {
     { n: "PSD Lab-4", code: "U24SE507", c: 1, type: "lab" },
     { n: "Tech. English", code: "U24MH508", c: 1 },
     { n: "Seminar", code: "U24CS509", c: 1 },
-    { n: "ETS-5", code: "U24AE510", c: 1 }
 ],
 
 "Sem 6": [
@@ -105,7 +87,6 @@ const COURSE_DATA = {
     { n: "UHV-II", code: "U24IK606B", c: 2 },
     { n: "PSD Lab-5", code: "U24SE607", c: 1, type: "lab" },
     { n: "Mini Project", code: "U24CS608", c: 1, type: "lab" },
-    { n: "ETS-6", code: "U24AE609", c: 1 }
 ],
 
 "Sem 7": [
@@ -126,54 +107,45 @@ const COURSE_DATA = {
 ]
     },
     "CSM": {
-        "Sem 1": [
-            { n: "DCODE", c: 3 },
-            { n: "EC", c: 4 },
-            { n: "STLD", c: 3 },
-            { n: "PPSC", c: 4 },
-            { n: "ECRW", c: 2 },
-            { n: "Sports & Yoga", c: 1 },
-            { n: "EGCAD", c: 1 },
-            { n: "Practicum-1", c: 1 },
-            { n: "SEA/SAA-1", c: 1 },
-            { n: "ETS-1", c: 1 }
-        ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
-        "Sem 3": [
-            { n: "EM & SML", c: 3 },
-            { n: "ADS", c: 4 },
-            { n: "OS", c: 3 },
-            { n: "ATCD", c: 3 },
-            { n: "OOP Through Java", c: 4 },
-            { n: "SIS", c: 1 },
-            { n: "PSD Lab-2", c: 1 },
-            { n: "Practicum-3", c: 1 },
-            { n: "SEA/SAA-3", c: 1 },
-            { n: "ETS-3", c: 1 }
-        ],
-        "Sem 4": [
-            { n: "DBMS", c: 4 },
-            { n: "AI", c: 3 },
-            { n: "SE", c: 3 },
-            { n: "CN", c: 3 },
-            { n: "PP", c: 4 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+       "Sem 1": [
+    { n: "DCODE", code: "U24MH101", c: 3 },
+    { n: "EC", code: "U24CY102B", c: 4 },
+    { n: "STLD", code: "U24EC111", c: 3 },
+    { n: "PPSC", code: "U24AI104", c: 4 },
+    { n: "ECRW", code: "U24MH105", c: 2 },
+    { n: "Sports & Yoga", code: "U24VA106", c: 1, type: "lab" },
+    { n: "EGCAD", code: "U24ME107", c: 1, type: "lab" }
+],
+
+"Sem 2": [
+    { n: "MTVC", code: "U24MH201", c: 3 },
+    { n: "EP", code: "U24PY202B", c: 4 },
+    { n: "COA", code: "U24AI203", c: 3 },
+    { n: "DSTC", code: "U24AI204", c: 4 },
+    { n: "BEE", code: "U24EE205B", c: 4 },
+    { n: "ILMS", code: "U24AE207", c: 1, type: "lab" },
+    { n: "PSD Lab-1", code: "U24SE208", c: 1, type: "lab" }
+],
+
+"Sem 3": [
+    { n: "EM & SML", code: "U24MH301E", c: 3 },
+    { n: "ADS", code: "U24AI302", c: 4 },
+    { n: "OS", code: "U24AI303", c: 3 },
+    { n: "ATCD", code: "U24AI304", c: 3 },
+    { n: "OOP Through Java", code: "U24AI305", c: 4 },
+    { n: "SIS", code: "U24VA306B", c: 1 },
+    { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
+],
+
+"Sem 4": [
+    { n: "DBMS", code: "U24AI401", c: 4 },
+    { n: "AI", code: "U24AI402", c: 3 },
+    { n: "SE", code: "U24AI403", c: 3 },
+    { n: "CN", code: "U24AI404", c: 3 },
+    { n: "PP", code: "U24AI405", c: 4 },
+    { n: "QALR", code: "U24VA406A", c: 2 },
+    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
+],
         "Sem 5": [
     { n: "M-Elective 1", code: "U24OE501YYX", c: 3 },
     { n: "WP", code: "U24AI502", c: 4 },
@@ -184,7 +156,6 @@ const COURSE_DATA = {
     { n: "PSD Lab-4", code: "U24AI507", c: 1, type: "lab" },
     { n: "Tech. English", code: "U24MH508", c: 1 },
     { n: "Seminar", code: "U24AI509", c: 1 },
-    { n: "ETS-5", code: "U24AE510", c: 1 }
 ],
 
 "Sem 6": [
@@ -196,7 +167,6 @@ const COURSE_DATA = {
     { n: "EITK", code: "U24IK606B", c: 2 },
     { n: "PSD Lab-5", code: "U24AI607", c: 1, type: "lab" },
     { n: "Mini Project", code: "U24AI608", c: 1, type: "lab" },
-    { n: "ETS-6", code: "U24AE609", c: 1 }
 ],
 
 "Sem 7": [
@@ -293,53 +263,44 @@ const COURSE_DATA = {
     },
     "CSD": {
         "Sem 1": [
-            { n: "DCODE", c: 3 },
-            { n: "EC", c: 4 },
-            { n: "STLD", c: 3 },
-            { n: "PPSC", c: 4 },
-            { n: "ECRW", c: 2 },
-            { n: "Sports & Yoga", c: 1 },
-            { n: "EGCAD", c: 1 },
-            { n: "Practicum-1", c: 1 },
-            { n: "SEA/SAA-1", c: 1 },
-            { n: "ETS-1", c: 1 }
-        ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
-        "Sem 3": [
-            { n: "EM & SD", c: 3 },
-            { n: "ADS", c: 4 },
-            { n: "OS", c: 3 },
-            { n: "ATCD", c: 3 },
-            { n: "OOP Through Java", c: 4 },
-            { n: "SIS", c: 1 },
-            { n: "PSD Lab-2", c: 1 },
-            { n: "Practicum-3", c: 1 },
-            { n: "SEA/SAA-3", c: 1 },
-            { n: "ETS-3", c: 1 }
-        ],
-        "Sem 4": [
-            { n: "DBMS", c: 4 },
-            { n: "AI", c: 3 },
-            { n: "SE", c: 3 },
-            { n: "CN", c: 3 },
-            { n: "PP", c: 4 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+    { n: "DCODE", code: "U24MH101", c: 3 },
+    { n: "EC", code: "U24CY102B", c: 4 },
+    { n: "STLD", code: "U24EC111", c: 3 },
+    { n: "PPSC", code: "U24DS104", c: 4 },
+    { n: "ECRW", code: "U24MH105", c: 2 },
+    { n: "Sports & Yoga", code: "U24VA106", c: 1, type: "lab" },
+    { n: "EGCAD", code: "U24ME107", c: 1, type: "lab" }
+],
+
+"Sem 2": [
+    { n: "MTVC", code: "U24MH201", c: 3 },
+    { n: "EP", code: "U24PY202B", c: 4 },
+    { n: "COA", code: "U24DS203", c: 3 },
+    { n: "DSTC", code: "U24DS204", c: 4 },
+    { n: "BEE", code: "U24EE205B", c: 4 },
+    { n: "ILMS", code: "U24AE207", c: 1, type: "lab" },
+    { n: "PSD Lab-1", code: "U24SE208", c: 1, type: "lab" }
+],
+
+"Sem 3": [
+    { n: "EM & SD", code: "U24MH301F", c: 3 },
+    { n: "ADS", code: "U24DS302", c: 4 },
+    { n: "OS", code: "U24DS303", c: 3 },
+    { n: "ATCD", code: "U24DS304", c: 3 },
+    { n: "OOP Through Java", code: "U24DS305", c: 4 },
+    { n: "SIS", code: "U24VA306B", c: 1 },
+    { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
+],
+
+"Sem 4": [
+    { n: "DBMS", code: "U24DS401", c: 4 },
+    { n: "AI", code: "U24DS402", c: 3 },
+    { n: "SE", code: "U24DS403", c: 3 },
+    { n: "CN", code: "U24DS404", c: 3 },
+    { n: "PP", code: "U24DS405", c: 4 },
+    { n: "QALR", code: "U24VA406A", c: 2 },
+    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
+],
         "Sem 5": [
     { n: "M-Elective 1", code: "U24OE501YYX", c: 3 },
     { n: "WP", code: "U24DS502", c: 4 },
@@ -350,7 +311,6 @@ const COURSE_DATA = {
     { n: "PSD Lab-4", code: "U24DS507", c: 1, type: "lab" },
     { n: "Tech. English", code: "U24MH508", c: 1 },
     { n: "Seminar", code: "U24DS509", c: 1 },
-    { n: "ETS-5", code: "U24AE510", c: 1 }
 ],
 
 "Sem 6": [
@@ -362,7 +322,6 @@ const COURSE_DATA = {
     { n: "EITK", code: "U24IK606B", c: 2 },
     { n: "PSD Lab-5", code: "U24DS607", c: 1, type: "lab" },
     { n: "Mini Project", code: "U24DS608", c: 1, type: "lab" },
-    { n: "ETS-6", code: "U24AE609", c: 1 }
 ],
 
 "Sem 7": [
@@ -384,56 +343,43 @@ const COURSE_DATA = {
  },
     "CSN": {
         "Sem 1": [
-            { n: "DCODE", c: 3 },
-            { n: "EC", c: 4 },
-            { n: "DLD", c: 3 },
-            { n: "PPSC", c: 4 },
-            { n: "ECRW", c: 2 },
-            { n: "Sports & Yoga", c: 1 },
-            { n: "EGCAD", c: 1 },
-            { n: "Practicum-1", c: 1 },
-            { n: "SEA/SAA-1", c: 1 },
-            { n: "ETS-1", c: 1 }
-        ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
-        "Sem 3": [
-            { n: "ATCD", c: 3 },
-            { n: "OS", c: 3 },
-            { n: "ADS", c: 4 },
-            { n: "CN", c: 4 },
-            { n: "OOP Through Java", c: 4 },
-            { n: "SIS", c: 1 },
-            { n: "PSD Lab-2", c: 1 },
-            { n: "Practicum-3", c: 1 },
-            { n: "SEA/SAA-3", c: 1 },
-            { n: "ETS-3", c: 1 }
-        ],
-/*
- * CSN - Semester 4
- * Added course codes for robust UMS auto-fill matching.
- */
+    { n: "DCODE", code: "U24MH101", c: 3 },
+    { n: "EC", code: "U24CY102B", c: 4 },
+    { n: "DLD", code: "U24CI111", c: 3 },
+    { n: "PPSC", code: "U24CN104", c: 4 },
+    { n: "ECRW", code: "U24MH105", c: 2 },
+    { n: "Sports & Yoga", code: "U24VA106", c: 1, type: "lab" },
+    { n: "EGCAD", code: "U24AE107", c: 1, type: "lab" }
+],
+
+"Sem 2": [
+    { n: "MTVC", code: "U24MH201", c: 3 },
+    { n: "EP", code: "U24PY202B", c: 4 },
+    { n: "COA", code: "U24CN203", c: 3 },
+    { n: "DSTC", code: "U24CN204", c: 4 },
+    { n: "BEE", code: "U24EE205B", c: 4 },
+    { n: "ILMS", code: "U24AE207", c: 1, type: "lab" },
+    { n: "PSD Lab-1", code: "U24SE208", c: 1, type: "lab" }
+],
+
+"Sem 3": [
+    { n: "ATCD", code: "U24CN301", c: 3 },
+    { n: "OS", code: "U24CN302", c: 3 },
+    { n: "ADS", code: "U24CN303", c: 4 },
+    { n: "CN", code: "U24CN304", c: 4 },
+    { n: "OOP Through Java", code: "U24CN305", c: 4 },
+    { n: "SIS", code: "U24VA306B", c: 1 },
+    { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
+],
+
 "Sem 4": [
-    { n: "DMPS", code: "U24MH401", c: 3 },
+    { n: "DMPS", code: "U24MH401D", c: 3 },
     { n: "DBMS", code: "U24CN402", c: 4 },
     { n: "DAA", code: "U24CN403", c: 3 },
     { n: "PP", code: "U24CN405", c: 4 },
     { n: "I & V", code: "U24CN404", c: 4 },
     { n: "QALR", code: "U24VA406A", c: 2 },
-    { n: "PSD Lab-3", c: 1, code: "U24SE407", type: "lab" },
-    { n: "Practicum-4", c: 1 },
-    { n: "SEA/SAA-4", c: 1 },
-    { n: "ETS-4", c: 1 }
+    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
 ],
         "Sem 5": [
     { n: "M-Elective 1", code: "U24OE501YYX", c: 3 },
@@ -445,7 +391,6 @@ const COURSE_DATA = {
     { n: "DAA Lab", code: "U24CN507", c: 1, type: "lab" },
     { n: "Tech. English", code: "U24MH508", c: 1 },
     { n: "Seminar", code: "U24CN509", c: 1 },
-    { n: "ETS-5", code: "U24AE510", c: 1 }
 ],
 
 "Sem 6": [
@@ -457,7 +402,6 @@ const COURSE_DATA = {
     { n: "EITK", code: "U24IK606A", c: 2 },
     { n: "FSD Lab", code: "U24CN607", c: 1, type: "lab" },
     { n: "Mini Project", code: "U24CN608", c: 1, type: "lab" },
-    { n: "ETS-6", code: "U24AE609", c: 1 }
 ],
 
 "Sem 7": [
@@ -478,53 +422,44 @@ const COURSE_DATA = {
     },
     "CSO": {
         "Sem 1": [
-            { n: "DCODE", c: 3 },
-            { n: "EC", c: 4 },
-            { n: "DLD", c: 3 },
-            { n: "PPSC", c: 4 },
-            { n: "ECRW", c: 2 },
-            { n: "Sports & Yoga", c: 1 },
-            { n: "EGCAD", c: 1 },
-            { n: "Practicum-1", c: 1 },
-            { n: "SEA/SAA-1", c: 1 },
-            { n: "ETS-1", c: 1 }
-        ],
-        "Sem 2": [
-            { n: "MTVC", c: 3 },
-            { n: "EP", c: 4 },
-            { n: "COA", c: 3 },
-            { n: "DSTC", c: 4 },
-            { n: "BEE", c: 4 },
-            { n: "ILMS", c: 1 },
-            { n: "PSD Lab-1", c: 1 },
-            { n: "Practicum-2", c: 1 },
-            { n: "SEA/SAA-2", c: 1 },
-            { n: "ETS-2", c: 1 }
-        ],
-        "Sem 3": [
-            { n: "FIOT", c: 4 },
-            { n: "OS", c: 3 },
-            { n: "ADS", c: 4 },
-            { n: "CN", c: 3 },
-            { n: "OOP Through Java", c: 4 },
-            { n: "SIS", c: 1 },
-            { n: "PSD Lab-2", c: 1 },
-            { n: "Practicum-3", c: 1 },
-            { n: "SEA/SAA-3", c: 1 },
-            { n: "ETS-3", c: 1 }
-        ],
-        "Sem 4": [
-            { n: "DMPS", c: 3 },
-            { n: "WT", c: 4 },
-            { n: "DBMS", c: 4 },
-            { n: "IoTA & P", c: 3 },
-            { n: "PPIoT", c: 4 },
-            { n: "QALR", c: 2 },
-            { n: "PSD Lab-3", c: 1 },
-            { n: "Practicum-4", c: 1 },
-            { n: "SEA/SAA-4", c: 1 },
-            { n: "ETS-4", c: 1 }
-        ],
+    { n: "DCODE", code: "U24MH101", c: 3 },
+    { n: "EC", code: "U24CY102B", c: 4 },
+    { n: "DLD", code: "U24CI111", c: 3 },
+    { n: "PPSC", code: "U24IN104", c: 4 },
+    { n: "ECRW", code: "U24MH105", c: 2 },
+    { n: "Sports & Yoga", code: "U24VA106", c: 1, type: "lab" },
+    { n: "EGCAD", code: "U24ME107", c: 1, type: "lab" }
+],
+
+"Sem 2": [
+    { n: "MTVC", code: "U24MH201", c: 3 },
+    { n: "EP", code: "U24PY202B", c: 4 },
+    { n: "COA", code: "U24IN203", c: 3 },
+    { n: "DSTC", code: "U24IN204", c: 4 },
+    { n: "BEE", code: "U24EE205B", c: 4 },
+    { n: "ILMS", code: "U24AE207", c: 1, type: "lab" },
+    { n: "PSD Lab-1", code: "U24SE208", c: 1, type: "lab" }
+],
+
+"Sem 3": [
+    { n: "FIOT", code: "U24IN301", c: 4 },
+    { n: "OS", code: "U24IN302", c: 3 },
+    { n: "ADS", code: "U24IN303", c: 4 },
+    { n: "CN", code: "U24IN304", c: 3 },
+    { n: "OOP Through Java", code: "U24IN305", c: 4 },
+    { n: "SIS", code: "U24VA306B", c: 1 },
+    { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
+],
+
+"Sem 4": [
+    { n: "DMPS", code: "U24MH401D", c: 3 },
+    { n: "WT", code: "U24IN402", c: 4 },
+    { n: "DBMS", code: "U24IN403", c: 4 },
+    { n: "IoTA & P", code: "U24IN404", c: 3 },
+    { n: "PPIoT", code: "U24IN405", c: 4 },
+    { n: "QALR", code: "U24VA406A", c: 2 },
+    { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
+],
         "Sem 5": [
     { n: "M-Elective 1", code: "U24OE501XX", c: 3 },
     { n: "AIoT", code: "U24IN502", c: 4 },
@@ -535,7 +470,6 @@ const COURSE_DATA = {
     { n: "FSD Lab", code: "U24IN507", c: 1, type: "lab" },
     { n: "Tech. English", code: "U24MH508", c: 1 },
     { n: "Seminar", code: "U24IN509", c: 1 },
-    { n: "ETS-5", code: "U24AE510", c: 1 }
 ],
 
 "Sem 6": [
@@ -547,7 +481,6 @@ const COURSE_DATA = {
     { n: "EITK", code: "U24IK606A", c: 2 },
     { n: "DevOps Lab", code: "U24IN607", c: 1, type: "lab" },
     { n: "Mini Project", code: "U24IN608", c: 1, type: "lab" },
-    { n: "ETS-6", code: "U24AE609", c: 1 }
 ],
 
 "Sem 7": [
