@@ -406,12 +406,78 @@ function normalizeCode(code) {
     return code.replace(/([0-9])([A-Z])$/, '$1');
 }
 
+/**
+ * Attendance Modal — reuses help-modal overlay + matching CSS classes
+ * @param {string} title - Modal header text
+ * @param {string} bodyHTML - Inner HTML for modal body
+ * @param {'success'|'warning'|'error'} type - Controls header color
+ */
+function showAttendanceModal(title, bodyHTML, type = 'success') {
+    const overlay = document.getElementById('help-modal-overlay');
+    const modal = document.getElementById('help-modal');
+    if (!overlay || !modal) { alert(bodyHTML); return; } // fallback
+
+    const headerGradient = {
+        success: 'linear-gradient(135deg, #059669 0%, #10b981 100%)',
+        warning: 'linear-gradient(135deg, #d97706 0%, #f59e0b 100%)',
+        error: 'linear-gradient(135deg, #dc2626 0%, #ef4444 100%)'
+    }[type] || 'linear-gradient(135deg, var(--primary) 0%, #6366f1 100%)';
+
+    const icon = { success: '✓', warning: '⚠', error: '✕' }[type] || '';
+
+    modal.innerHTML = `
+        <div class="help-modal-header" style="background: ${headerGradient}">
+            <span style="font-size:1.5rem">${icon}</span>
+            <h3 class="help-modal-title">${title}</h3>
+            <button id="att-modal-close" class="help-close-btn" aria-label="Close">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+            </button>
+        </div>
+        <div class="help-modal-body">
+            ${bodyHTML}
+        </div>
+        <div class="help-modal-footer">
+            <span></span>
+            <button id="att-modal-ok" class="help-got-it-btn">Got it!</button>
+        </div>
+    `;
+
+    overlay.classList.remove('hidden');
+    requestAnimationFrame(() => overlay.classList.add('help-visible'));
+
+    const closeModal = () => {
+        overlay.classList.remove('help-visible');
+        setTimeout(() => overlay.classList.add('hidden'), 200);
+    };
+
+    document.getElementById('att-modal-close').addEventListener('click', closeModal);
+    document.getElementById('att-modal-ok').addEventListener('click', closeModal);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); }, { once: true });
+
+    const escHandler = (e) => { if (e.key === 'Escape') { closeModal(); document.removeEventListener('keydown', escHandler); } };
+    document.addEventListener('keydown', escHandler);
+}
+
 function parseUmsAttendance() {
 
     const textArea = document.getElementById("ums-paste");
 
     if (!textArea || !textArea.value.trim()) {
-        alert("Paste UMS attendance first.");
+        showAttendanceModal(
+            'No Data Pasted',
+            `<div class="help-step">
+                <div class="help-step-content">
+                    <p>Paste your UMS attendance data in the text box first.</p>
+                    <ul class="help-sub-items" style="margin-top:0.5rem">
+                        <li>Open KITS UMS → Attendance Report</li>
+                        <li>Select All → Copy → Paste here</li>
+                    </ul>
+                </div>
+            </div>`,
+            'warning'
+        );
         return;
     }
 
@@ -534,14 +600,36 @@ function parseUmsAttendance() {
     updateAttendanceCalculations();
 
     if (unmatched.length > 0) {
-        const message = unmatched.map(u => `${u.name} (${u.code})`).join("\n");
+        const listHTML = unmatched.map(u =>
+            `<li style="color:#ef4444; font-weight:600">• ${u.name} <span style="opacity:0.6; font-weight:400">(${u.code})</span></li>`
+        ).join('');
 
-        alert(
-            "The following subjects could not be auto-filled:\n\n" +
-            message +
-            "\n\nPlease enter these values manually."
+        showAttendanceModal(
+            'Some Subjects Not Matched',
+            `<div class="help-step">
+            <div class="help-step-content">
+                <p>The following subjects could not be auto-filled:</p>
+                <ul style="list-style:none; padding:0; margin:0.75rem 0 0; display:flex; flex-direction:column; gap:0.25rem">
+                    ${listHTML}
+                </ul>
+            </div>
+        </div>
+        <div class="help-tip-box">
+            <strong>Tip:</strong> Enter these values manually. Highlighted fields are marked in red.
+        </div>`,
+            'error'
         );
     } else {
-        alert("Attendance auto-filled successfully.");
+        showAttendanceModal(
+            'Auto-Fill Complete',
+            `<div class="help-step">
+            <span class="help-step-icon" style="background:#059669">✓</span>
+            <div class="help-step-content">
+                <p>All subjects matched and filled successfully!</p>
+                <p class="help-step-tip">Your attendance data has been saved automatically.</p>
+            </div>
+        </div>`,
+            'success'
+        );
     }
 }
