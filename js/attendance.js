@@ -70,46 +70,46 @@ function generateSubjects(branch, sem) {
         }
 
         if (credits === 4) {
-    /*
-     * Extended subject object with:
-     * -code: official course identifier (e.g., U24CS402)
-     * -type: distinguishes theory vs lab
-     * Enables robust UMS auto-fill using course code 
-     * Does NOT affect UI or SGPA logic.
-     */
-    generated.push({
-        name: `${name} Theory`,
-        code: code,        // Added: stable course identifier
-        type: "theory",    // Added: needed to differentiate from lab
-        held: 0,
-        absent: 0
-    });
+            /*
+             * Extended subject object with:
+             * -code: official course identifier (e.g., U24CS402)
+             * -type: distinguishes theory vs lab
+             * Enables robust UMS auto-fill using course code 
+             * Does NOT affect UI or SGPA logic.
+             */
+            generated.push({
+                name: `${name} Theory`,
+                code: code,        // Added: stable course identifier
+                type: "theory",    // Added: needed to differentiate from lab
+                held: 0,
+                absent: 0
+            });
 
-    generated.push({
-        name: `${name} Lab`,
-        code: code,        // Same course code
-        type: "lab",       // Marks this row as lab
-        held: 0,
-        absent: 0
-    });
+            generated.push({
+                name: `${name} Lab`,
+                code: code,        // Same course code
+                type: "lab",       // Marks this row as lab
+                held: 0,
+                absent: 0
+            });
 
-} else {
+        } else {
 
-    /*
-     * For non-4 credit subjects (single component),
-     * we still attach 'code' and default 'type' as "theory".
-     * This ensures uniform internal structure for matching.
-     */
+            /*
+             * For non-4 credit subjects (single component),
+             * we still attach 'code' and default 'type' as "theory".
+             * This ensures uniform internal structure for matching.
+             */
 
-  generated.push({
-    name: name,
-    code: c.code || null,
-    type: c.type || "theory", // assume theory if not specified
-    held: 0,
-    absent: 0
-});
+            generated.push({
+                name: name,
+                code: c.code || null,
+                type: c.type || "theory", // assume theory if not specified
+                held: 0,
+                absent: 0
+            });
 
-}
+        }
     });
 
     return generated;
@@ -150,25 +150,25 @@ function saveAttendanceData(data) {
 
 function renderAttendanceTable() {
     const data = getAttendanceData();
-// Safe backward compatibility (match by name, not index)
-if (data && Array.isArray(data)) {
+    // Safe backward compatibility (match by name, not index)
+    if (data && Array.isArray(data)) {
 
-    const freshSubjects = generateSubjects(
-        document.getElementById('branch-select').value,
-        document.getElementById('semester-select').value
-    );
+        const freshSubjects = generateSubjects(
+            document.getElementById('branch-select').value,
+            document.getElementById('semester-select').value
+        );
 
-    data.forEach(oldSub => {
+        data.forEach(oldSub => {
 
-        // Find matching subject by name
-        const match = freshSubjects.find(f => f.name === oldSub.name);
+            // Find matching subject by name
+            const match = freshSubjects.find(f => f.name === oldSub.name);
 
-        if (match) {
-            oldSub.code = match.code;
-            oldSub.type = match.type;
-        }
-    });
-}
+            if (match) {
+                oldSub.code = match.code;
+                oldSub.type = match.type;
+            }
+        });
+    }
 
     if (!data) {
         // No selection made
@@ -461,91 +461,87 @@ function parseUmsAttendance() {
 
         const key = code + "_" + type;
 
-if (parsedMap[key]) {
+        if (parsedMap[key]) {
 
-    heldInput.value = parsedMap[key].held;
-    absentInput.value = parsedMap[key].absent;
+            heldInput.value = parsedMap[key].held;
+            absentInput.value = parsedMap[key].absent;
 
-    const idx = heldInput.dataset.idx;
+            const idx = heldInput.dataset.idx;
 
-    const mobileHeld = attTableBody.querySelector(
-        `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
-    );
+            const mobileHeld = attTableBody.querySelector(
+                `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
+            );
 
-    const mobileAbsent = attTableBody.querySelector(
-        `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
-    );
+            const mobileAbsent = attTableBody.querySelector(
+                `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
+            );
 
-    if (mobileHeld) {
-        mobileHeld.value = parsedMap[key].held;
-        mobileHeld.dispatchEvent(new Event('input', { bubbles: true }));
-        mobileHeld.style.backgroundColor = "";
-        mobileHeld.style.border = "";
-    }
+            if (mobileHeld) {
+                mobileHeld.value = parsedMap[key].held;
+                mobileHeld.style.backgroundColor = "";
+                mobileHeld.style.border = "";
+            }
 
-    if (mobileAbsent) {
-        mobileAbsent.value = parsedMap[key].absent;
-        mobileAbsent.dispatchEvent(new Event('input', { bubbles: true }));
-        mobileAbsent.style.backgroundColor = "";
-        mobileAbsent.style.border = "";
-    }
+            if (mobileAbsent) {
+                mobileAbsent.value = parsedMap[key].absent;
+                mobileAbsent.style.backgroundColor = "";
+                mobileAbsent.style.border = "";
+            }
 
-    heldInput.style.backgroundColor = "";
-    absentInput.style.backgroundColor = "";
-    heldInput.style.border = "";
-    absentInput.style.border = "";
-}
-else {
+            heldInput.style.backgroundColor = "";
+            absentInput.style.backgroundColor = "";
+            heldInput.style.border = "";
+            absentInput.style.border = "";
+        }
+        else {
 
-    unmatched.push({
-        name: row.querySelector("td").innerText.trim(),
-        code: heldInput.dataset.code
+            unmatched.push({
+                name: row.querySelector("td").innerText.trim(),
+                code: heldInput.dataset.code
+            });
+
+            heldInput.value = 0;
+            absentInput.value = 0;
+
+            const idx = heldInput.dataset.idx;
+
+            const mobileHeld = attTableBody.querySelector(
+                `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
+            );
+
+            const mobileAbsent = attTableBody.querySelector(
+                `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
+            );
+
+            if (mobileHeld) {
+                mobileHeld.value = 0;
+                mobileHeld.style.backgroundColor = "#fee2e2";
+                mobileHeld.style.border = "2px solid #ef4444";
+            }
+
+            if (mobileAbsent) {
+                mobileAbsent.value = 0;
+                mobileAbsent.style.backgroundColor = "#fee2e2";
+                mobileAbsent.style.border = "2px solid #ef4444";
+            }
+
+            heldInput.style.backgroundColor = "#fee2e2";
+            heldInput.style.border = "2px solid #ef4444";
+            absentInput.style.backgroundColor = "#fee2e2";
+            absentInput.style.border = "2px solid #ef4444";
+        }
     });
+    updateAttendanceCalculations();
 
-    heldInput.value = 0;
-    absentInput.value = 0;
+    if (unmatched.length > 0) {
+        const message = unmatched.map(u => `${u.name} (${u.code})`).join("\n");
 
-    const idx = heldInput.dataset.idx;
-
-    const mobileHeld = attTableBody.querySelector(
-        `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
-    );
-
-    const mobileAbsent = attTableBody.querySelector(
-        `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
-    );
-
-    if (mobileHeld) {
-        mobileHeld.value = 0;
-        mobileHeld.dispatchEvent(new Event('input', { bubbles: true }));
-        mobileHeld.style.backgroundColor = "#fee2e2";
-        mobileHeld.style.border = "2px solid #ef4444";
+        alert(
+            "The following subjects could not be auto-filled:\n\n" +
+            message +
+            "\n\nPlease enter these values manually."
+        );
+    } else {
+        alert("Attendance auto-filled successfully.");
     }
-
-    if (mobileAbsent) {
-        mobileAbsent.value = 0;
-        mobileAbsent.dispatchEvent(new Event('input', { bubbles: true }));
-        mobileAbsent.style.backgroundColor = "#fee2e2";
-        mobileAbsent.style.border = "2px solid #ef4444";
-    }
-
-    heldInput.style.backgroundColor = "#fee2e2";
-    heldInput.style.border = "2px solid #ef4444";
-    absentInput.style.backgroundColor = "#fee2e2";
-    absentInput.style.border = "2px solid #ef4444";
-}
- });
-updateAttendanceCalculations();
-
-if (unmatched.length > 0) {
-    const message = unmatched.map(u => `${u.name} (${u.code})`).join("\n");
-
-    alert(
-        "The following subjects could not be auto-filled:\n\n" +
-        message +
-        "\n\nPlease enter these values manually."
-    );
-} else {
-    alert("Attendance auto-filled successfully.");
-}
 }
