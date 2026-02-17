@@ -447,6 +447,7 @@ function parseUmsAttendance() {
     });
 
     const rows = attTableBody.querySelectorAll('tr.group');
+    const unmatched = [];
 
     rows.forEach(row => {
 
@@ -460,26 +461,89 @@ function parseUmsAttendance() {
 
         const key = code + "_" + type;
 
-        if (parsedMap[key]) {
-            heldInput.value = parsedMap[key].held;
-            absentInput.value = parsedMap[key].absent;
+if (parsedMap[key]) {
 
-            const idx = heldInput.dataset.idx;
+    heldInput.value = parsedMap[key].held;
+    absentInput.value = parsedMap[key].absent;
 
-const mobileHeld = attTableBody.querySelector(
-    `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
-);
+    const idx = heldInput.dataset.idx;
 
-const mobileAbsent = attTableBody.querySelector(
-    `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
-);
+    const mobileHeld = attTableBody.querySelector(
+        `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
+    );
 
-if (mobileHeld) mobileHeld.value = parsedMap[key].held;
-if (mobileAbsent) mobileAbsent.value = parsedMap[key].absent;
+    const mobileAbsent = attTableBody.querySelector(
+        `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
+    );
 
-        }
+    if (mobileHeld) {
+        mobileHeld.value = parsedMap[key].held;
+        mobileHeld.dispatchEvent(new Event('input', { bubbles: true }));
+        mobileHeld.style.backgroundColor = "";
+        mobileHeld.style.border = "";
+    }
+
+    if (mobileAbsent) {
+        mobileAbsent.value = parsedMap[key].absent;
+        mobileAbsent.dispatchEvent(new Event('input', { bubbles: true }));
+        mobileAbsent.style.backgroundColor = "";
+        mobileAbsent.style.border = "";
+    }
+
+    heldInput.style.backgroundColor = "";
+    absentInput.style.backgroundColor = "";
+    heldInput.style.border = "";
+    absentInput.style.border = "";
+}
+else {
+
+    unmatched.push({
+        name: row.querySelector("td").innerText.trim(),
+        code: heldInput.dataset.code
     });
 
+    heldInput.value = 0;
+    absentInput.value = 0;
+
+    const idx = heldInput.dataset.idx;
+
+    const mobileHeld = attTableBody.querySelector(
+        `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
+    );
+
+    const mobileAbsent = attTableBody.querySelector(
+        `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
+    );
+
+    if (mobileHeld) {
+        mobileHeld.value = 0;
+        mobileHeld.dispatchEvent(new Event('input', { bubbles: true }));
+        mobileHeld.style.backgroundColor = "#fee2e2";
+        mobileHeld.style.border = "2px solid #ef4444";
+    }
+
+    if (mobileAbsent) {
+        mobileAbsent.value = 0;
+        mobileAbsent.dispatchEvent(new Event('input', { bubbles: true }));
+        mobileAbsent.style.backgroundColor = "#fee2e2";
+        mobileAbsent.style.border = "2px solid #ef4444";
+    }
+
+    heldInput.style.backgroundColor = "#fee2e2";
+    heldInput.style.border = "2px solid #ef4444";
+    absentInput.style.backgroundColor = "#fee2e2";
+    absentInput.style.border = "2px solid #ef4444";
+}
+ });
+if (unmatched.length > 0) {
+    const message = unmatched.map(u => `${u.name} (${u.code})`).join("\n");
+
+    alert(
+        "The following subjects could not be auto-filled:\n\n" +
+        message +
+        "\n\nPlease enter these values manually."
+    );
+}
     updateAttendanceCalculations();
     alert("Attendance auto-filled successfully.");
 }
