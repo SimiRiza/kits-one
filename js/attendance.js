@@ -535,6 +535,8 @@ else {
     absentInput.style.border = "2px solid #ef4444";
 }
  });
+updateAttendanceCalculations();
+
 if (unmatched.length > 0) {
     const message = unmatched.map(u => `${u.name} (${u.code})`).join("\n");
 
@@ -543,7 +545,7 @@ if (unmatched.length > 0) {
         message +
         "\n\nPlease enter these values manually."
     );
-}
-    updateAttendanceCalculations();
+} else {
     alert("Attendance auto-filled successfully.");
+}
 }
