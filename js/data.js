@@ -212,7 +212,7 @@ const COURSE_DATA = {
             { n: "MT", code: "U24ME303", c: 3 },
             { n: "HPE", code: "U24ME304", c: 3 },
             { n: "PP", code: "U24ME305", c: 4 },
-            { n: "SIS", code: "U24VA306B", c: 1, type: "lab" },
+            { n: "SIS", code: "U24VA306B", c: 1 },
             { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
         ],
         "Sem 4": [
@@ -536,7 +536,7 @@ const COURSE_DATA = {
             { n: "EMWTL", code: "U24EC403", c: 3 },
             { n: "COMP", code: "U24EC404", c: 3 },
             { n: "PP", code: "U24EC405", c: 4 },
-            { n: "SIS", code: "U24VA406B", c: 1, type: "lab" },
+            { n: "SIS", code: "U24VA406B", c: 1 },
             { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
         ],
         "Sem 5": [
@@ -679,7 +679,7 @@ const COURSE_DATA = {
             { n: "SE", code: "U24IT303", c: 3 },
             { n: "DBMS", code: "U24IT304", c: 4 },
             { n: "OOP Through Java", code: "U24IT305", c: 4 },
-            { n: "SIS", code: "U24VA306B", c: 1, type: "lab" },
+            { n: "SIS", code: "U24VA306B", c: 1 },
             { n: "PSD Lab-2", code: "U24SE307", c: 1, type: "lab" }
         ],
         /*
@@ -768,7 +768,7 @@ const COURSE_DATA = {
             { n: "EMT", code: "U24CI403", c: 3 },
             { n: "CA&M", code: "U24CI404", c: 3 },
             { n: "PP", code: "U24CI405", c: 4 },
-            { n: "SIS", code: "U24VA406B", c: 1 },/* Explicitly mark standalone LABS as type "lab" so that UMS auto-fill matches correctly.*/
+            { n: "SIS", code: "U24VA406B", c: 1 },/* need not to marks as lab as it's listed as theory in UMS*/
             { n: "PSD Lab-3", code: "U24SE407", c: 1, type: "lab" }
         ],
         "Sem 5": [

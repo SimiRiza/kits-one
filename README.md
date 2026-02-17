@@ -6,6 +6,8 @@ What began as a personal tool to calculate my own SGPA accurately gradually evol
 
 KITS One is a complete academic companion designed to take the guesswork out of your journey at college.
 
+***KITS One doesn’t track your attendance — it helps you understand and plan it.***
+
 
 ## What’s inside?
 
@@ -15,12 +17,19 @@ KITS One is a complete academic companion designed to take the guesswork out of 
 - **CGPA to % Converter:** One-tap conversion using the official `(CGPA - 0.5) * 10` formula.
 - **Dark Mode & Mobile-First:** Because we check our grades late at night and mostly on our phones.
 - **NEW:** Built-in guided help for each feature (beginner-friendly onboarding)
+- **NEW: Attendance Autofill:** Paste your UMS attendance table and auto-fill Held/Absent values instantly using pattern matching. Manual entry still supported.
+
 
 ## Technical Stack
 
 - **Frontend:** HTML5, Tailwind CSS
 - **Logic:** Vanilla JavaScript (ES6+)
 - **Design:** Mobile-first, clean UI
+
+## Contributors
+
+- **[Simi Riza](https://github.com/SimiRiza)** – Attendance autofill feature (UMS table parsing & input automation)
+
 
 ## License
 

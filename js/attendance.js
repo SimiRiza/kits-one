@@ -463,6 +463,20 @@ function parseUmsAttendance() {
         if (parsedMap[key]) {
             heldInput.value = parsedMap[key].held;
             absentInput.value = parsedMap[key].absent;
+
+            const idx = heldInput.dataset.idx;
+
+const mobileHeld = attTableBody.querySelector(
+    `tr.md\\:hidden input[data-idx="${idx}"][data-field="held"]`
+);
+
+const mobileAbsent = attTableBody.querySelector(
+    `tr.md\\:hidden input[data-idx="${idx}"][data-field="absent"]`
+);
+
+if (mobileHeld) mobileHeld.value = parsedMap[key].held;
+if (mobileAbsent) mobileAbsent.value = parsedMap[key].absent;
+
         }
     });
 
