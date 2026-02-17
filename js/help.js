@@ -37,11 +37,12 @@ const HelpSystem = {
                 },
                 {
                     icon: '3',
-                    text: 'For each subject, note the values shown in UMS and enter them here:',
+                    text: 'Quick mode! We’ll auto-fill Held & Absent for you.',
                     subItems: [
-                        'Total Classes Held → Enter in <strong>Held</strong> column',
-                        'Classes Absent → Enter in <strong>Absent</strong> column',
-                        'For theory subjects, add: <strong>Theory + Tutorial classes</strong> before entering the value.'
+                        'Open KITS UMS → Attendance Report and paste the copied text in the autofill box.',
+                        'Desktop: Ctrl + A → Ctrl + C',
+                        'Mobile: Select All → Copy → Paste',
+                        'You can still edit everything manually below.',
                     ]
                 },
                 {
