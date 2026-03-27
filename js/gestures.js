@@ -5,7 +5,7 @@ let touchStartY = 0;
 let touchEndX = 0;
 let touchEndY = 0;
 
-const TAB_ORDER = ['tab-attend', 'tab-calc', 'tab-plan', 'tab-conv'];
+const TAB_ORDER = ['tab-attend', 'tab-calc', 'tab-plan', 'tab-ese', 'tab-conv'];
 
 function initGestures() {
     const contentArea = document.querySelector('body'); // Listen on body for better coverage

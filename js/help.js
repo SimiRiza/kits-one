@@ -107,6 +107,41 @@ const HelpSystem = {
                 }
             ],
             tip: 'This feature is ideal for: planning 8/9+ cutoff for placements, avoiding last-minute panic, and tracking long-term goals.'
+        },
+        'tab-ese': {
+            title: 'How to use ESE Target Calculator',
+            icon: '',
+            steps: [
+                {
+                    icon: '1',
+                    text: '<strong>Select your Branch & Semester</strong> from the dropdowns above',
+                    subItems: [
+                        'Subject cards will appear automatically based on your selection.'
+                    ]
+                },
+                {
+                    icon: '2',
+                    text: 'Enter your CIE marks for each subject:',
+                    subItems: [
+                        '<strong>Mid 1 & Mid 2</strong> — Your midterm scores (out of 50 each)',
+                        '<strong>GCBAA</strong> — Internal marks (out of 50)',
+                        '<strong>Lab CIE & Lab Ext</strong> — For lab subjects only'
+                    ]
+                },
+                {
+                    icon: '3',
+                    text: 'Select a <strong>Desired Grade</strong> for each subject (S, A, B, C, D, P)'
+                },
+                {
+                    icon: '4',
+                    text: 'Click <strong>Calculate ESE Targets</strong>',
+                    subItems: [
+                        'You\'ll see the required ESE marks for each subject',
+                        'An estimated SGPA based on your desired grades'
+                    ]
+                }
+            ],
+            tip: 'If required ESE marks exceed 100, that grade is mathematically unattainable. Focus on maximizing your Internal Marks (CIE) to lower your ESE burden!'
         }
     },
 

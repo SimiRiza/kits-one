@@ -1,0 +1,272 @@
+/**
+ * KITS One - ESE Target Calculator
+ * Calculates required ESE marks based on CIE scores and desired grades.
+ * Dynamically reads subjects from COURSE_DATA.
+ */
+
+const EseCalculator = {
+    // Grade thresholds: grade point → minimum percentage required
+    gradeThresholds: [
+        { value: 10, label: "10 (S)", minPercent: 90 },
+        { value: 9, label: "9 (A)", minPercent: 80 },
+        { value: 8, label: "8 (B)", minPercent: 70 },
+        { value: 7, label: "7 (C)", minPercent: 60 },
+        { value: 6, label: "6 (D)", minPercent: 50 },
+        { value: 5, label: "5 (P)", minPercent: 40 },
+        { value: 0, label: "0 (F)", minPercent: 0 }
+    ],
+
+    /**
+     * Determines subject category for ESE calculation purposes.
+     * - 'lab': type === 'lab' AND credits >= 3 → total 350, has Lab CIE + Lab Ext fields
+     * - 'theory': credits >= 2 AND NOT lab → total 250, has Mid1 + Mid2 + GCBAA
+     * - 'credit': credits === 1 → grade-only input (no CIE marks)
+     * 
+     * Special: credits >= 4 with no explicit type → theory+lab combo (total 350)
+     */
+    getSubjectCategory(course) {
+        if (course.c === 1) return 'credit';
+        if (course.c === 0) return 'credit'; // 0-credit audit courses
+        if (course.type === 'lab' && course.c >= 3) return 'lab';
+        if (course.c >= 4 && course.type !== 'lab') return 'theorylab'; // theory+lab combo
+        return 'theory';
+    },
+
+    /**
+     * Gets total marks for a subject category.
+     */
+    getTotalMarks(category) {
+        if (category === 'lab' || category === 'theorylab') return 350;
+        if (category === 'theory') return 250;
+        return 0; // credit subjects don't have marks
+    },
+
+    /**
+     * Calculates minimum total marks needed for a desired grade point.
+     */
+    calculateRequiredMarks(totalMarks, desiredGradePoint) {
+        const grade = this.gradeThresholds.find(g => g.value === desiredGradePoint);
+        if (!grade || grade.value === 0) return 9999;
+        return Math.floor((grade.minPercent / 100.0) * totalMarks);
+    },
+
+    /**
+     * Renders the ESE subject cards based on selected branch/semester.
+     */
+    render() {
+        const branch = document.getElementById('branch-select').value;
+        const sem = document.getElementById('semester-select').value;
+        const mainContainer = document.getElementById('ese-main-subjects');
+        const creditContainer = document.getElementById('ese-credit-subjects');
+        const formContainer = document.getElementById('ese-form-container');
+        const emptyState = document.getElementById('ese-empty-state');
+        const resultsSection = document.getElementById('ese-results');
+
+        if (!mainContainer || !creditContainer) return;
+
+        mainContainer.innerHTML = '';
+        creditContainer.innerHTML = '';
+        if (resultsSection) resultsSection.classList.add('hidden');
+
+        if (!branch || !sem || !COURSE_DATA[branch] || !COURSE_DATA[branch][sem]) {
+            if (formContainer) formContainer.classList.add('hidden');
+            if (emptyState) emptyState.classList.remove('hidden');
+            return;
+        }
+
+        if (formContainer) formContainer.classList.remove('hidden');
+        if (emptyState) emptyState.classList.add('hidden');
+
+        const courses = COURSE_DATA[branch][sem];
+        let hasMain = false;
+        let hasCredit = false;
+
+        courses.forEach((course, index) => {
+            const category = this.getSubjectCategory(course);
+            const subId = `ese_sub${index}`;
+
+            if (category === 'credit') {
+                hasCredit = true;
+                creditContainer.innerHTML += this.buildCreditCard(course, subId);
+            } else {
+                hasMain = true;
+                mainContainer.innerHTML += this.buildMainCard(course, subId, category);
+            }
+        });
+
+        // Show/hide section headers
+        const mainHeader = document.getElementById('ese-main-header');
+        const creditHeader = document.getElementById('ese-credit-header');
+        if (mainHeader) mainHeader.classList.toggle('hidden', !hasMain);
+        if (creditHeader) creditHeader.classList.toggle('hidden', !hasCredit);
+    },
+
+    /**
+     * Builds a card for a main subject (theory, lab, or theorylab).
+     */
+    buildMainCard(course, subId, category) {
+        const totalMarks = this.getTotalMarks(category);
+        const isLab = (category === 'lab' || category === 'theorylab');
+
+        let fieldsHTML = `
+            <div class="grid grid-cols-2 gap-3">
+                ${this.numberInput(`${subId}_m1`, 'Mid 1', 50)}
+                ${this.numberInput(`${subId}_mid`, 'Mid 2', 50)}
+                ${this.numberInput(`${subId}_gcbaa`, 'GCBAA', 50)}
+                ${isLab ? this.numberInput(`${subId}_labcie`, 'Lab CIE', 60) : ''}
+                ${isLab ? this.numberInput(`${subId}_labext`, 'Lab Ext', 40) : ''}
+                ${this.gradeSelect(`${subId}_gp`, 'Desired Grade')}
+            </div>
+        `;
+
+        return `
+            <div class="theme-card p-5 rounded-xl border theme-border">
+                <h4 class="text-base font-bold theme-text mb-1">${course.n}</h4>
+                <p class="text-xs theme-muted mb-3">${course.c} Credits • Total: ${totalMarks} marks</p>
+                ${fieldsHTML}
+                <div id="${subId}_result" class="mt-3 text-center text-sm font-semibold min-h-[28px]"></div>
+            </div>
+        `;
+    },
+
+    /**
+     * Builds a card for a 1-credit subject (grade only).
+     */
+    buildCreditCard(course, subId) {
+        return `
+            <div class="theme-card p-4 rounded-xl border theme-border">
+                <h4 class="text-sm font-bold theme-text mb-1">${course.n}</h4>
+                <p class="text-xs theme-muted mb-2">${course.c} Credit</p>
+                ${this.gradeSelect(`${subId}_gp`, 'Expected Grade')}
+            </div>
+        `;
+    },
+
+    /**
+     * Creates a number input field HTML.
+     */
+    numberInput(id, label, max) {
+        return `
+            <div>
+                <label for="${id}" class="block text-xs font-bold theme-muted mb-1">${label} (${max})</label>
+                <input type="number" id="${id}" name="${id}" value="0" min="0" max="${max}" required
+                    class="theme-input w-full p-2 border theme-border rounded-lg text-sm font-medium text-center focus:ring-2 focus:ring-indigo-500 outline-none transition">
+            </div>
+        `;
+    },
+
+    /**
+     * Creates a grade select dropdown HTML.
+     */
+    gradeSelect(id, label) {
+        const options = this.gradeThresholds.map(gp =>
+            `<option value="${gp.value}" ${gp.value === 10 ? 'selected' : ''}>${gp.label}</option>`
+        ).join('');
+
+        return `
+            <div class="col-span-2">
+                <label for="${id}" class="block text-xs font-bold text-indigo-500 mb-1">${label}</label>
+                <select id="${id}" name="${id}"
+                    class="theme-input w-full p-2 border theme-border rounded-lg text-sm font-medium focus:ring-2 focus:ring-indigo-500 outline-none transition cursor-pointer">
+                    ${options}
+                </select>
+            </div>
+        `;
+    },
+
+    /**
+     * Calculates ESE requirements and estimated SGPA.
+     */
+    calculate() {
+        const branch = document.getElementById('branch-select').value;
+        const sem = document.getElementById('semester-select').value;
+
+        if (!branch || !sem || !COURSE_DATA[branch] || !COURSE_DATA[branch][sem]) {
+            alert('Please select Branch and Semester first.');
+            return;
+        }
+
+        const courses = COURSE_DATA[branch][sem];
+        const allGrades = [];
+        const allCredits = [];
+        const summaryItems = [];
+
+        courses.forEach((course, index) => {
+            const subId = `ese_sub${index}`;
+            const category = this.getSubjectCategory(course);
+            const gpSelect = document.getElementById(`${subId}_gp`);
+            const desiredGP = gpSelect ? parseInt(gpSelect.value) : 10;
+
+            allGrades.push(desiredGP);
+            allCredits.push(course.c);
+
+            if (category !== 'credit') {
+                const totalMarks = this.getTotalMarks(category);
+                const isLab = (category === 'lab' || category === 'theorylab');
+                const resultEl = document.getElementById(`${subId}_result`);
+
+                const m1 = parseInt(document.getElementById(`${subId}_m1`)?.value) || 0;
+                const mid = parseInt(document.getElementById(`${subId}_mid`)?.value) || 0;
+                const gcbaa = parseInt(document.getElementById(`${subId}_gcbaa`)?.value) || 0;
+                const labcie = isLab ? (parseInt(document.getElementById(`${subId}_labcie`)?.value) || 0) : 0;
+                const labext = isLab ? (parseInt(document.getElementById(`${subId}_labext`)?.value) || 0) : 0;
+
+                const currentMarks = m1 + mid + gcbaa + labcie + labext;
+                const requiredTotal = this.calculateRequiredMarks(totalMarks, desiredGP);
+                const eseNeeded = requiredTotal - currentMarks;
+
+                let resultText = '';
+                let resultColor = '';
+                let summaryText = '';
+
+                if (desiredGP === 0) {
+                    resultText = 'F Grade selected';
+                    resultColor = 'text-slate-400';
+                    summaryText = `<strong>${course.n}:</strong> F Grade selected — no ESE target.`;
+                } else if (eseNeeded <= 0) {
+                    resultText = `✓ Already achieved! (surplus: ${Math.abs(eseNeeded)})`;
+                    resultColor = 'text-green-500';
+                    summaryText = `<strong>${course.n}:</strong> Already achieved ${desiredGP} GP target.`;
+                } else if (eseNeeded > 100) {
+                    resultText = `✗ Needs ${eseNeeded} in ESE (not possible)`;
+                    resultColor = 'text-red-500';
+                    summaryText = `<strong>${course.n}:</strong> ${desiredGP} GP not possible (needs ${eseNeeded} in ESE).`;
+                    allGrades[index] = 0; // Override to F for SGPA calc
+                } else {
+                    resultText = `→ Need ${eseNeeded} in ESE`;
+                    resultColor = 'text-amber-500';
+                    summaryText = `<strong>${course.n}:</strong> Need <strong>${eseNeeded}</strong> in ESE for ${desiredGP} GP.`;
+                }
+
+                if (resultEl) {
+                    resultEl.textContent = resultText;
+                    resultEl.className = `mt-3 text-center text-sm font-semibold min-h-[28px] ${resultColor}`;
+                }
+                summaryItems.push(summaryText);
+            }
+        });
+
+        // Calculate estimated SGPA
+        let totalPoints = 0;
+        let totalCredits = 0;
+        for (let i = 0; i < allGrades.length; i++) {
+            if (allCredits[i] > 0) {
+                totalPoints += allGrades[i] * allCredits[i];
+                totalCredits += allCredits[i];
+            }
+        }
+        const sgpa = totalCredits === 0 ? 0 : (totalPoints / totalCredits);
+
+        // Update results UI
+        const sgpaDisplay = document.getElementById('ese-sgpa-display');
+        const summaryList = document.getElementById('ese-summary');
+        const resultsSection = document.getElementById('ese-results');
+
+        if (sgpaDisplay) sgpaDisplay.textContent = sgpa.toFixed(2);
+        if (summaryList) summaryList.innerHTML = summaryItems.map(s => `<li class="theme-muted text-sm leading-relaxed">${s}</li>`).join('');
+        if (resultsSection) {
+            resultsSection.classList.remove('hidden');
+            resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    }
+};

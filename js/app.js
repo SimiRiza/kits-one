@@ -74,6 +74,10 @@ function init() {
         if (typeof renderAttendanceTable === 'function') {
             renderAttendanceTable();
         }
+          // Reset ESE Calculator if active
+        if (typeof EseCalculator !== 'undefined') {
+            EseCalculator.render();
+        }
     });
 
     // Render Courses on Semester Change
@@ -82,6 +86,10 @@ function init() {
         if (typeof renderAttendanceTable === 'function') {
             renderAttendanceTable();
         }
+                if (typeof EseCalculator !== 'undefined') {
+            EseCalculator.render();
+        }
+
     });
 
     // Initialize Attendance Module (if present)
