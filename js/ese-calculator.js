@@ -12,7 +12,7 @@ const EseCalculator = {
         { value: 8, label: "8 (B)", minPercent: 70 },
         { value: 7, label: "7 (C)", minPercent: 60 },
         { value: 6, label: "6 (D)", minPercent: 50 },
-        { value: 5, label: "5 (P)", minPercent: 40 },
+        { value: 4, label: "4 (P)", minPercent: 40 },
         { value: 0, label: "0 (F)", minPercent: 0 }
     ],
 
@@ -205,11 +205,11 @@ const EseCalculator = {
                 const isLab = (category === 'lab' || category === 'theorylab');
                 const resultEl = document.getElementById(`${subId}_result`);
 
-                const m1 = parseInt(document.getElementById(`${subId}_m1`)?.value) || 0;
-                const mid = parseInt(document.getElementById(`${subId}_mid`)?.value) || 0;
-                const gcbaa = parseInt(document.getElementById(`${subId}_gcbaa`)?.value) || 0;
-                const labcie = isLab ? (parseInt(document.getElementById(`${subId}_labcie`)?.value) || 0) : 0;
-                const labext = isLab ? (parseInt(document.getElementById(`${subId}_labext`)?.value) || 0) : 0;
+                const m1 = Math.min(Math.max(parseInt(document.getElementById(`${subId}_m1`)?.value) || 0, 0), 50);
+                const mid = Math.min(Math.max(parseInt(document.getElementById(`${subId}_mid`)?.value) || 0, 0), 50);
+                const gcbaa = Math.min(Math.max(parseInt(document.getElementById(`${subId}_gcbaa`)?.value) || 0, 0), 50);
+                const labcie = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labcie`)?.value) || 0, 0), 60) : 0;
+                const labext = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labext`)?.value) || 0, 0), 40) : 0;
 
                 const currentMarks = m1 + mid + gcbaa + labcie + labext;
                 const requiredTotal = this.calculateRequiredMarks(totalMarks, desiredGP);
