@@ -121,11 +121,11 @@ const HelpSystem = {
                 },
                 {
                     icon: '2',
-                    text: 'Enter your CIE marks for each subject:',
+                    text: 'Enter your marks for each subject:',
                     subItems: [
-                        '<strong>Mid 1 & Mid 2</strong> — Your midterm scores (out of 50 each)',
-                        '<strong>GCBAA</strong> — Internal marks (out of 50)',
-                        '<strong>Lab CIE & Lab Ext</strong> — For lab subjects only'
+                        '<strong>CIE Total</strong> — From UMS "Total (out of 150)" column',
+                        '<strong>Lab Internal</strong> — From UMS (for lab subjects only)',
+                        '<strong>Lab External</strong> — Your expected lab external marks'
                     ]
                 },
                 {

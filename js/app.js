@@ -240,6 +240,11 @@ function calculateTarget() {
         return;
     }
 
+    if (nextCredits <= 0) {
+        alert("Next Semester Credits must be greater than 0.");
+        return;
+    }
+
     const req = Calculator.calculateTargetSGPA(currentCGPA, currentCredits, targetCGPA, nextCredits);
     const resEl = document.getElementById('planner-result');
 

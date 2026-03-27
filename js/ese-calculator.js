@@ -25,8 +25,8 @@ const EseCalculator = {
      * Special: credits >= 4 with no explicit type → theory+lab combo (total 350)
      */
     getSubjectCategory(course) {
+        if (course.c === 0) return 'skip'; // 0-credit audit courses — exclude from ESE
         if (course.c === 1) return 'credit';
-        if (course.c === 0) return 'credit'; // 0-credit audit courses
         if (course.type === 'lab' && course.c >= 3) return 'lab';
         if (course.c >= 4 && course.type !== 'lab') return 'theorylab'; // theory+lab combo
         return 'theory';
@@ -83,6 +83,7 @@ const EseCalculator = {
 
         courses.forEach((course, index) => {
             const category = this.getSubjectCategory(course);
+            if (category === 'skip') return; // Skip 0-credit audit courses
             const subId = `ese_sub${index}`;
 
             if (category === 'credit') {
@@ -93,6 +94,9 @@ const EseCalculator = {
                 mainContainer.innerHTML += this.buildMainCard(course, subId, category);
             }
         });
+
+        // Restore saved inputs from localStorage
+        this.restoreInputs(branch, sem);
 
         // Show/hide section headers
         const mainHeader = document.getElementById('ese-main-header');
@@ -107,14 +111,15 @@ const EseCalculator = {
     buildMainCard(course, subId, category) {
         const totalMarks = this.getTotalMarks(category);
         const isLab = (category === 'lab' || category === 'theorylab');
+        const subtitle = isLab
+            ? `${course.c} Credits • CIE: 150 + ESE: 100 + Lab: 100`
+            : `${course.c} Credits • CIE: 150 + ESE: 100`;
 
         let fieldsHTML = `
             <div class="grid grid-cols-2 gap-3">
-                ${this.numberInput(`${subId}_m1`, 'Mid 1', 50)}
-                ${this.numberInput(`${subId}_mid`, 'Mid 2', 50)}
-                ${this.numberInput(`${subId}_gcbaa`, 'GCBAA', 50)}
-                ${isLab ? this.numberInput(`${subId}_labcie`, 'Lab CIE', 60) : ''}
-                ${isLab ? this.numberInput(`${subId}_labext`, 'Lab Ext', 40) : ''}
+                ${this.numberInput(`${subId}_cie`, 'CIE Total', 150)}
+                ${isLab ? this.numberInput(`${subId}_labint`, 'Lab Internal', 60) : ''}
+                ${isLab ? this.numberInput(`${subId}_labext`, 'Lab External (Expected)', 40) : ''}
                 ${this.gradeSelect(`${subId}_gp`, 'Desired Grade')}
             </div>
         `;
@@ -122,7 +127,7 @@ const EseCalculator = {
         return `
             <div class="theme-card p-5 rounded-xl border theme-border">
                 <h4 class="text-base font-bold theme-text mb-1">${course.n}</h4>
-                <p class="text-xs theme-muted mb-3">${course.c} Credits • Total: ${totalMarks} marks</p>
+                <p class="text-xs theme-muted mb-3">${subtitle}</p>
                 ${fieldsHTML}
                 <div id="${subId}_result" class="mt-3 text-center text-sm font-semibold min-h-[28px]"></div>
             </div>
@@ -150,6 +155,7 @@ const EseCalculator = {
             <div>
                 <label for="${id}" class="block text-xs font-bold theme-muted mb-1">${label} (${max})</label>
                 <input type="number" id="${id}" name="${id}" value="0" min="0" max="${max}" required
+                    onblur="this.value = Math.max(0, Math.min(${max}, this.value || 0))"
                     class="theme-input w-full p-2 border theme-border rounded-lg text-sm font-medium text-center focus:ring-2 focus:ring-indigo-500 outline-none transition">
             </div>
         `;
@@ -194,6 +200,7 @@ const EseCalculator = {
         courses.forEach((course, index) => {
             const subId = `ese_sub${index}`;
             const category = this.getSubjectCategory(course);
+            if (category === 'skip') return; // Skip 0-credit audit courses
             const gpSelect = document.getElementById(`${subId}_gp`);
             const desiredGP = gpSelect ? parseInt(gpSelect.value) : 10;
 
@@ -205,13 +212,11 @@ const EseCalculator = {
                 const isLab = (category === 'lab' || category === 'theorylab');
                 const resultEl = document.getElementById(`${subId}_result`);
 
-                const m1 = Math.min(Math.max(parseInt(document.getElementById(`${subId}_m1`)?.value) || 0, 0), 50);
-                const mid = Math.min(Math.max(parseInt(document.getElementById(`${subId}_mid`)?.value) || 0, 0), 50);
-                const gcbaa = Math.min(Math.max(parseInt(document.getElementById(`${subId}_gcbaa`)?.value) || 0, 0), 50);
-                const labcie = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labcie`)?.value) || 0, 0), 60) : 0;
-                const labext = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labext`)?.value) || 0, 0), 40) : 0;
+                const cieTotal = Math.min(Math.max(parseInt(document.getElementById(`${subId}_cie`)?.value) || 0, 0), 150);
+                const labInt = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labint`)?.value) || 0, 0), 60) : 0;
+                const labExt = isLab ? Math.min(Math.max(parseInt(document.getElementById(`${subId}_labext`)?.value) || 0, 0), 40) : 0;
 
-                const currentMarks = m1 + mid + gcbaa + labcie + labext;
+                const currentMarks = cieTotal + labInt + labExt;
                 const requiredTotal = this.calculateRequiredMarks(totalMarks, desiredGP);
                 const eseNeeded = requiredTotal - currentMarks;
 
@@ -267,6 +272,59 @@ const EseCalculator = {
         if (resultsSection) {
             resultsSection.classList.remove('hidden');
             resultsSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Save inputs to localStorage
+        this.saveInputs(branch, sem);
+    },
+
+    /**
+     * Saves all ESE input values to localStorage.
+     */
+    saveInputs(branch, sem) {
+        const courses = COURSE_DATA[branch]?.[sem];
+        if (!courses) return;
+        const data = {};
+        courses.forEach((course, index) => {
+            const category = this.getSubjectCategory(course);
+            if (category === 'skip') return;
+            const subId = `ese_sub${index}`;
+            const isLab = (category === 'lab' || category === 'theorylab');
+
+            // Save grade select for all non-skip subjects
+            const gpEl = document.getElementById(`${subId}_gp`);
+            if (gpEl) data[`${subId}_gp`] = gpEl.value;
+
+            if (category !== 'credit') {
+                ['_cie'].forEach(suffix => {
+                    const el = document.getElementById(`${subId}${suffix}`);
+                    if (el) data[`${subId}${suffix}`] = el.value;
+                });
+                if (isLab) {
+                    ['_labint', '_labext'].forEach(suffix => {
+                        const el = document.getElementById(`${subId}${suffix}`);
+                        if (el) data[`${subId}${suffix}`] = el.value;
+                    });
+                }
+            }
+        });
+        localStorage.setItem(`ese_${branch}_${sem}`, JSON.stringify(data));
+    },
+
+    /**
+     * Restores saved ESE input values from localStorage.
+     */
+    restoreInputs(branch, sem) {
+        const saved = localStorage.getItem(`ese_${branch}_${sem}`);
+        if (!saved) return;
+        try {
+            const data = JSON.parse(saved);
+            Object.entries(data).forEach(([id, value]) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value;
+            });
+        } catch (e) {
+            // Ignore corrupted data
         }
     }
 };
