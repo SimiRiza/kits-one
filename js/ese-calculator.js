@@ -326,5 +326,53 @@ const EseCalculator = {
         } catch (e) {
             // Ignore corrupted data
         }
+    },
+
+    /**
+     * Exports the ESE Results Summary as a PNG Image
+     */
+    exportToImage() {
+        if (typeof html2canvas === 'undefined') {
+            alert("Export failed: required library is loading or blocked by your browser. Please try again.");
+            return;
+        }
+        
+        const targetDiv = document.getElementById('ese-results');
+        const exportBtn = document.getElementById('ese-export-btn');
+        const originalBtnDisplay = exportBtn ? exportBtn.style.display : '';
+        
+        // Hide the export button temporarily during screenshot
+        if (exportBtn) exportBtn.style.display = 'none';
+
+        // Add a slight padding for aesthetics
+        targetDiv.style.padding = '10px';
+        targetDiv.style.background = getComputedStyle(document.body).backgroundColor;
+
+        html2canvas(targetDiv, {
+            scale: 2, // 2x resolution for sharpness
+            backgroundColor: getComputedStyle(document.body).backgroundColor,
+            useCORS: true
+        }).then(canvas => {
+            // Restore styles
+            targetDiv.style.padding = '';
+            targetDiv.style.background = '';
+            if (exportBtn) exportBtn.style.display = originalBtnDisplay;
+
+            // Trigger Download
+            const base64image = canvas.toDataURL("image/png");
+            const a = document.createElement("a");
+            a.href = base64image;
+            a.download = `KITS-One-ESE-Targets-${new Date().getTime()}.png`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }).catch(err => {
+            console.error("Export Error:", err);
+            // Restore styles just in case
+            targetDiv.style.padding = '';
+            targetDiv.style.background = '';
+            if (exportBtn) exportBtn.style.display = originalBtnDisplay;
+            alert("An error occurred while exporting the image.");
+        });
     }
 };
