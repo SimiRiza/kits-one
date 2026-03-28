@@ -41,6 +41,7 @@
     <link href="css/output.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
     <meta name="google-site-verification" content="P53uMom3Vt8mM1fAM8-95QupltE2P9SIblg_Wx4Xps8" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 
 <body class="theme-bg min-h-screen p-4 lg:p-8">
@@ -76,18 +77,17 @@
             <button onclick="switchTab('tab-attend')"
                 class="tab-btn active flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">Bunk
                 Buffer</button>
+            <button onclick="switchTab('tab-ese')"
+                class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">ESE
+                Planner</button>
             <button onclick="switchTab('tab-calc')"
                 class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">SGPA
                 Calculator</button>
             <button onclick="switchTab('tab-plan')"
                 class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">Target
                 Planner</button>
-            <button onclick="switchTab('tab-ese')"
-                class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">ESE
-                Planner</button>
             <button onclick="switchTab('tab-conv')"
-                class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">CGPA
-                to %
+                class="tab-btn flex-1 py-4 px-6 text-sm font-bold whitespace-nowrap">CGPA Converter
             </button>
         </div>
 
@@ -111,7 +111,7 @@
                 </div>
             </div>
 
-            <!-- Tool 1: SGPA Calculator -->
+            <!-- Tool 3: SGPA Calculator -->
             <div id="tab-calc" class="tab-content hidden space-y-8 animate-fade-in">
                 <!-- Selectors moved global -->
 
@@ -152,11 +152,11 @@
                 </div>
             </div>
 
-            <!-- Tool 2: Converter -->
+            <!-- Tool 5: CGPA Converter -->
             <div id="tab-conv" class="tab-content hidden max-w-lg mx-auto space-y-6 pt-4">
                 <div class="text-center">
-                    <h3 class="font-bold text-xl text-slate-800">CGPA to % Converter</h3>
-                    <p class="text-sm text-slate-500 mt-1">Formula: (CGPA - 0.50) x 10</p>
+                    <h3 class="font-bold text-xl text-slate-800">CGPA Converter</h3>
+                    <p class="text-sm text-slate-500 mt-1">Formulas: (CGPA - 0.50) × 10 &nbsp;|&nbsp; 4.0 Scale: (CGPA ÷ 10) × 4</p>
                 </div>
                 <div class="flex gap-4 items-end theme-card p-6 rounded-2xl border theme-border">
                     <div class="flex-1">
@@ -173,7 +173,7 @@
                 </div>
             </div>
 
-            <!-- Tool 3: Planner -->
+            <!-- Tool 4: Target Planner -->
             <div id="tab-plan" class="tab-content hidden max-w-2xl mx-auto space-y-6">
                 <div class="text-center mb-6">
                     <h3 class="font-bold text-xl text-slate-800">Target CGPA Planner</h3>
@@ -213,7 +213,7 @@
                 </div>
             </div>
 
-            <!-- Tool 4: ESE Target Calculator -->
+            <!-- Tool 2: ESE Target Calculator -->
             <div id="tab-ese" class="tab-content hidden space-y-6 animate-fade-in">
                 <div class="text-center mb-2">
                     <h3 class="font-bold text-xl theme-heading">ESE Target Calculator</h3>
@@ -259,6 +259,10 @@
                     </div>
                     <p class="text-xs text-center theme-muted">Note: ESE scores depend on both your performance and
                         evaluator discretion. Maximize internals!</p>
+                    <button id="ese-export-btn" onclick="EseCalculator.exportToImage()"
+                        class="btn-glow w-full py-3 bg-slate-800 text-white font-bold rounded-xl hover:bg-slate-900 transition mt-4">
+                        Export as Image
+                    </button>
                 </div>
             </div>
 
@@ -371,7 +375,7 @@ You can still edit everything manually below."
         <p>&copy; Made with ❤️ by <a target="_blank" href="https://github.com/ziyad-hyder"
                 class="text-indigo-500 font-bold hover:underline">Ziyad Hyder</a></p>
         <p class="text-xs mt-2">Not affiliated with KITS Administration</p>
-        <p class="text-xs mt-2 font-mono text-slate-300">v2.1.0</p>
+        <p class="text-xs mt-2 font-mono text-slate-300">v3.0.0</p>
     </footer>
 
     <!-- Swipe Hint (Mobile Only) -->

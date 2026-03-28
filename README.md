@@ -9,6 +9,13 @@ KITS One is a complete academic companion designed to take the guesswork out of 
 ***KITS One doesn’t track your attendance — it helps you understand and plan it.***
 
 
+## What's New!
+
+- **The ESE Target Planner:** No more blind panic before your external exams. Just enter your CIE internals (out of 150), pick your dream grade, and the tool calculates the exact minimum marks you need to score in the 100-mark ESE to get that grade. It even automatically saves your internals to your device.
+- **Export your goal!:** Stop taking ugly full-scroll screenshots. You can now tap "Export as Image" at the bottom of the ESE Planner to instantly download a sleek, square, high-res PNG image of your target scores—perfect for sharing to your class WhatsApp groups. Powered by html2canvas with reliable cross-browser download support.
+- **International CGPA Scales:** The Converter tab now instantly translates your KITS 10-point SGPA into Percentage and the US 4.0 Scale out of the box. Essential if you're eyeing MS applications abroad.
+- **Bunk Buffer Rules All:** Let's be real, we all know what tool gets used the most. The Bunk Buffer has been officially promoted to the #1 default launch tab.
+
 ## What’s inside?
 
 - **Smart Bunk Buffer:** Track your attendance and know exactly how many classes you can safely skip (or need to attend) to stay above 75%.
